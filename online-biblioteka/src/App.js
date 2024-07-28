@@ -1,26 +1,39 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from './app/header/Header'; // Adjust the path as needed
 import Sidebar from './app/components/Sidebar';
 import Settings from './app/components/Settings';
 import Me from './app/components/Me';
+import Login from './Login'; // Adjust the path as needed
 import './App.css';
 
-function App() {
+const App = () => {
+  const isAuthenticated = !!localStorage.getItem('jwt');
+
   return (
     <div className="App">
-      <Header />
-      <div className="main-container">
-        <Sidebar />
-        <div className="content">
-          <Routes>
-            <Route path="/me" element={<Me />} />
-            <Route path="/" element={<Settings />} />
-          </Routes>
-        </div>
-      </div>
+      {isAuthenticated ? (
+        <>
+          <Header />
+          <div className="main-container">
+            <Sidebar />
+            <div className="content">
+              <Routes>
+                <Route path="/me" element={<Me />} />
+                <Route path="/" element={<Settings />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      )}
     </div>
   );
-}
+};
 
 export default App;
