@@ -1,11 +1,11 @@
-
-// src/components/UserProfile.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Me.css';
 
 const Me = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
@@ -24,6 +24,26 @@ const Me = () => {
     });
   }, []);
 
+  const handleLogout = () => {
+    const token = localStorage.getItem('jwt');
+    axios.post('https://biblioteka.simonovicp.com/api/logout', { all: true }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      if (response.data.success) {
+        localStorage.removeItem('jwt');
+        navigate('/login');
+        window.location.reload(); // Refresh the page after logout
+      }
+    })
+    .catch(error => {
+      console.error("There was an error logging out!", error);
+    });
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -39,6 +59,7 @@ const Me = () => {
         <p>Email: {user.email}</p>
         <p>Role: {user.role}</p>
       </div>
+      <button className="logout-button" onClick={handleLogout}>Log Out</button>
     </div>
   );
 };
