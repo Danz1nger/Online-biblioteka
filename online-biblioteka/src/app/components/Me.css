@@ -1,5 +1,6 @@
 .user-profile {
   padding: 20px;
+  position: relative; /* Add this line */
 }
 
 .user-info {
@@ -15,7 +16,9 @@
 }
 
 .logout-button {
-  margin-top: 20px;
+  position: absolute; /* Add this line */
+  bottom: 20px; /* Adjust the value as needed */
+  right: 20px; /* Adjust the value as needed */
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
