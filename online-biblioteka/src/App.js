@@ -6,6 +6,7 @@ import Settings from './app/components/Settings';
 import Me from './app/components/Me';
 import Login from './Login'; // Adjust the path as needed
 import './App.css';
+import Register from './app/components/Register';
 
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('jwt');
@@ -30,6 +31,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       )}
     </div>
