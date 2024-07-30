@@ -1,5 +1,5 @@
-[](https://komarev.com/ghpvc/?/Danz1nger/Online-biblioteka)
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=Danz1nger/Online-biblioteka&label=Biblioteka%20views&color=0e75b6&style=flat" alt="biblioteka" /> </p>
+
+
 # Online-biblioteka
 Project by students of ICT Cortex.
 
