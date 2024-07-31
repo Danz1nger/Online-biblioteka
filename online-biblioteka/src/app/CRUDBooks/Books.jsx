@@ -46,7 +46,7 @@ const Books = () => {
             <th>Izdato</th>
             <th>U prekoračenju</th>
             <th>Ukupna količina</th>
-            <th>Akcije</th>
+             {/*<th>Akcije</th>*/}
           </tr>
         </thead>
         <tbody>
@@ -60,7 +60,7 @@ const Books = () => {
               <td>{book.bSamples}</td>
               <td>{book.fSamples}</td>
               <td>{book.samples}</td>
-              <td>
+              {/*<td>
                 <div className="actions-menu">
                   <button>Pogledaj Detalje</button>
                   <button>Izmeni Knjigu</button>
@@ -70,7 +70,7 @@ const Books = () => {
                   <button>Rezerviši Knjigu</button>
                   <button>Izbriši Knjigu</button>
                 </div>
-              </td>
+              </td>*/}
             </tr>
           ))}
         </tbody>
