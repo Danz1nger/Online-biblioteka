@@ -90,7 +90,7 @@ const Books = () => {
             <th>Izdato</th>
             <th>U prekoračenju</th>
             <th>Ukupna količina</th>
-            <th>Akcije</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
