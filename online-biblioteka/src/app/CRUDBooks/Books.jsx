@@ -6,6 +6,7 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedBooks, setSelectedBooks] = useState([]);
 
   useEffect(() => {
     // Fetch books from API
@@ -32,6 +33,24 @@ const Books = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      setSelectedBooks(books.map(book => book.id));
+    } else {
+      setSelectedBooks([]);
+    }
+  };
+
+  const handleSelectBook = (bookId) => {
+    setSelectedBooks(prevSelectedBooks => {
+      if (prevSelectedBooks.includes(bookId)) {
+        return prevSelectedBooks.filter(id => id !== bookId);
+      } else {
+        return [...prevSelectedBooks, bookId];
+      }
+    });
+  };
+
   const filteredBooks = books.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -56,6 +75,13 @@ const Books = () => {
       <table>
         <thead>
           <tr>
+            <th>
+              <input
+                type="checkbox"
+                onChange={handleSelectAll}
+                checked={selectedBooks.length === books.length}
+              />
+            </th>
             <th>Naziv Knjige</th>
             <th>Autor</th>
             <th>Kategorija</th>
@@ -70,6 +96,13 @@ const Books = () => {
         <tbody>
           {filteredBooks.map(book => (
             <tr key={book.id}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedBooks.includes(book.id)}
+                  onChange={() => handleSelectBook(book.id)}
+                />
+              </td>
               <td>{book.title}</td>
               <td>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</td>
               <td>{book.categories.map(category => category.name).join(', ')}</td>
@@ -83,12 +116,11 @@ const Books = () => {
                   <button className="actions-button">⋮</button>
                   <div className="dropdown-content">
                     <button>Pogledaj Detalje</button>
-                    <button>Izmeni Knjigu</button>
-                    <button>Otpiši Knjigu</button>
-                    <button>Izdaj Knjigu</button>
+                    <button>Izmijeni Knjigu</button>
+                    <button>Obriši Knjigu</button>
                     <button>Vrati Knjigu</button>
                     <button>Rezerviši Knjigu</button>
-                    <button>Izbriši Knjigu</button>
+                    <button>Izdaj Knjigu</button>
                   </div>
                 </div>
               </td>
