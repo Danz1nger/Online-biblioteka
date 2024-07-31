@@ -5,6 +5,7 @@ import './Books.css'; // Create a CSS file for styling
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     // Fetch books from API
@@ -27,6 +28,14 @@ const Books = () => {
     fetchBooks();
   }, []);
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredBooks = books.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -34,6 +43,15 @@ const Books = () => {
   return (
     <div className="books-container">
       <h1>Knjige</h1>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Pretraži knjige..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <span className="search-icon">🔍</span>
+      </div>
       <button className="new-book-btn">Nova Knjiga</button>
       <table>
         <thead>
@@ -46,11 +64,11 @@ const Books = () => {
             <th>Izdato</th>
             <th>U prekoračenju</th>
             <th>Ukupna količina</th>
-             {/*<th>Akcije</th>*/}
+            <th>Akcije</th>
           </tr>
         </thead>
         <tbody>
-          {books.map(book => (
+          {filteredBooks.map(book => (
             <tr key={book.id}>
               <td>{book.title}</td>
               <td>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</td>
@@ -60,17 +78,20 @@ const Books = () => {
               <td>{book.bSamples}</td>
               <td>{book.fSamples}</td>
               <td>{book.samples}</td>
-              {/*<td>
+              <td>
                 <div className="actions-menu">
-                  <button>Pogledaj Detalje</button>
-                  <button>Izmeni Knjigu</button>
-                  <button>Otpiši Knjigu</button>
-                  <button>Izdaj Knjigu</button>
-                  <button>Vrati Knjigu</button>
-                  <button>Rezerviši Knjigu</button>
-                  <button>Izbriši Knjigu</button>
+                  <button className="actions-button">⋮</button>
+                  <div className="dropdown-content">
+                    <button>Pogledaj Detalje</button>
+                    <button>Izmeni Knjigu</button>
+                    <button>Otpiši Knjigu</button>
+                    <button>Izdaj Knjigu</button>
+                    <button>Vrati Knjigu</button>
+                    <button>Rezerviši Knjigu</button>
+                    <button>Izbriši Knjigu</button>
+                  </div>
                 </div>
-              </td>*/}
+              </td>
             </tr>
           ))}
         </tbody>
