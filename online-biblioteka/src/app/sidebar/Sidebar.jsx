@@ -12,11 +12,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ onToggle }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = (e) => {
+    e.stopPropagation();  // Prevent event bubbling
     setIsExpanded(!isExpanded);
+    onToggle();
   };
 
   return (

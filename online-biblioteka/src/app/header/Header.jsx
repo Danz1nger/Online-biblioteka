@@ -8,7 +8,6 @@ const Header = () => {
   const handleProfileClick = () => {
     navigate('/me');
   };
-
   return (
     <header className="header">
       <div className="logo">
@@ -31,4 +30,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header;  // Ensure default export

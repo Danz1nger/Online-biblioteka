@@ -1,10 +1,15 @@
 .header {
   background-color: #2196F3;
   color: white;
-  padding: 10px 20px;
+  padding: 20px 20px; /* Increased the top and bottom padding to make the header thicker */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure the header is above other elements */
 }
 
 .logo {

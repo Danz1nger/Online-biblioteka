@@ -1,13 +1,18 @@
-
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding-top: 60px; /* Adjust according to the header height */
 }
 
-.main-container {
+.main-container-app {
   display: flex;
   flex: 1;
+  margin-left: 80px; /* Adjust according to the sidebar width */
+}
+
+.main-container-app.expanded {
+  margin-left: 220px; /* Adjust according to the expanded sidebar width */
 }
 
 .content {
