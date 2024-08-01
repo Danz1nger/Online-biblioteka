@@ -5,6 +5,7 @@ import './Books.css'; // Create a CSS file for styling
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBooks, setSelectedBooks] = useState([]);
 
@@ -21,8 +22,10 @@ const Books = () => {
           }
         });
         setBooks(response.data.data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (err) {
         setError(err.message);
+        setLoading(false); // Set loading to false if there's an error
       }
     };
 
@@ -115,12 +118,12 @@ const Books = () => {
                 <div className="actions-menu">
                   <button className="actions-button">⋮</button>
                   <div className="dropdown-content">
-                    <button>Pogledaj Detalje</button>
-                    <button>Izmijeni Knjigu</button>
-                    <button>Obriši Knjigu</button>
-                    <button>Vrati Knjigu</button>
-                    <button>Rezerviši Knjigu</button>
-                    <button>Izdaj Knjigu</button>
+                    <button>Pogledaj</button>
+                    <button>Izmijeni</button>
+                    <button>Obriši</button>
+                    <button>Vrati</button>
+                    <button>Rezerviši</button>
+                    <button>Izdaj</button>
                   </div>
                 </div>
               </td>
@@ -128,6 +131,7 @@ const Books = () => {
           ))}
         </tbody>
       </table>
+      {loading && <div className="spinner"></div>} {/* Show spinner while loading */}
     </div>
   );
 };
