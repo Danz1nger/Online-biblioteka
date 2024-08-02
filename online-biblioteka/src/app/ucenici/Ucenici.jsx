@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar
+  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar, CircularProgress
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Ucenici.css';
@@ -27,11 +27,13 @@ const Ucenici = () => {
         const response = await axios.get('https://biblioteka.simonovicp.com/api/users', {
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json; charset=utf-8',
+            'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         });
-        setStudents(response.data.data);
+        // Filter users to keep only those with role "Učenik"
+        const filteredStudents = response.data.data.filter(user => user.role === "Učenik");
+        setStudents(filteredStudents);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -56,7 +58,7 @@ const Ucenici = () => {
       handleMenuClose();
     } catch (err) {
       console.error('Error deleting user:', err);
-      // Optionally, you can set an error state and display it to the user
+      setError('Failed to delete user. Please try again.');
     }
   };
 
@@ -98,13 +100,15 @@ const Ucenici = () => {
   const handleMenuClose = (action) => {
     if (action === 'delete' && selectedStudent) {
       handleDeleteUser(selectedStudent.id);
-    } else {
-      setAnchorEl(null);
-      setSelectedStudent(null);
+    } else if (action === 'view' && selectedStudent) {
+      navigate(`/ucenici/ucenik/${selectedStudent.id}`);
+    } else if (action === 'edit' && selectedStudent) {
+      navigate(`/ucenici/ucenik/${selectedStudent.id}/edit`);
     }
+    setAnchorEl(null);
+    setSelectedStudent(null);
   };
 
-  // Sort and filter students
   const sortedStudents = [...students].sort((a, b) => {
     if (sortConfig.key) {
       let aValue = a[sortConfig.key];
@@ -142,67 +146,73 @@ const Ucenici = () => {
           placeholder="Pretraži učenike..."
           value={searchTerm}
           onChange={handleSearch}
+          aria-label="Search students"
         />
-        <span className="search-icon">🔍</span>
+        <span className="search-icon" aria-hidden="true">🔍</span>
       </div>
       <button className="new-student-btn" onClick={() => navigate('/ucenici/noviucenik')}>Novi Učenik</button>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  onChange={handleSelectAll}
-                  checked={selectedStudents.length === students.length}
-                />
-              </TableCell>
-              <TableCell onClick={() => handleSort('name')}>
-                Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Tip Korisnika</TableCell>
-              <TableCell>Zadnji pristup sistemu</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredStudents.map(student => (
-              <TableRow key={student.id}>
+      {loading ? (
+        <div className="spinner-container">
+          <CircularProgress />
+        </div>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table aria-label="Students table">
+            <TableHead>
+              <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedStudents.includes(student.id)}
-                    onChange={() => handleSelectStudent(student.id)}
+                    onChange={handleSelectAll}
+                    checked={selectedStudents.length === students.length}
+                    aria-label="Select all students"
                   />
                 </TableCell>
-                <TableCell>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar src={student.photoPath || 'https://biblioteka.simonovicp.com/img/profile.jpg'} alt={`${student.name} ${student.surname}`} />
-                    <span style={{ marginLeft: '8px' }}>{`${student.name} ${student.surname}`}</span>
-                  </div>
+                <TableCell onClick={() => handleSort('name')}>
+                  Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell>{student.role}</TableCell>
-                <TableCell>{student.lastAccess}</TableCell>
-                <TableCell align="right">
-                  <IconButton onClick={(event) => handleMenuOpen(event, student)}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && selectedStudent === student}
-                    onClose={() => handleMenuClose()}
-                  >
-                    <MenuItem onClick={() => handleMenuClose()}>Pogledaj</MenuItem>
-                    <MenuItem onClick={() => handleMenuClose()}>Izmijeni</MenuItem>
-                    <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
-                  </Menu>
-                </TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Zadnji pristup sistemu</TableCell>
+                <TableCell />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {loading && <div className="spinner"></div>}
+            </TableHead>
+            <TableBody>
+              {filteredStudents.map(student => (
+                <TableRow key={student.id}>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedStudents.includes(student.id)}
+                      onChange={() => handleSelectStudent(student.id)}
+                      aria-label={`Select ${student.name} ${student.surname}`}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Avatar src={student.photoPath || 'https://biblioteka.simonovicp.com/img/profile.jpg'} alt={`${student.name} ${student.surname}`} />
+                      <span style={{ marginLeft: '8px' }}>{`${student.name} ${student.surname}`}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  <TableCell>{student.lastAccess}</TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={(event) => handleMenuOpen(event, student)} aria-label="More options">
+                      <MoreVertIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl) && selectedStudent !== null}
+        onClose={() => handleMenuClose()}
+      >
+        <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
+        <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
+        <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
+      </Menu>
     </div>
   );
 };

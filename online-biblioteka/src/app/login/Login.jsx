@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import styles from './Login.module.css';
 
 const Login = () => {
@@ -15,29 +16,27 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
+      const response = await axios.post(API_URL, {
+        username,
+        password,
+        device
+      }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${API_KEY}`
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-          device: device
-        })
+        }
       });
-      const data = await response.json();
+
+      const { data } = response;
       if (data.success) {
-        // Store the token in local storage
         localStorage.setItem('jwt', data.data.token);
         setResponseMessage({ type: 'success', message: data.message });
-        navigate('/'); // Redirect to the home page
+        navigate('/');
       } else {
         setResponseMessage({ type: 'error', message: data.message || 'Login failed' });
       }
     } catch (error) {
-      setResponseMessage({ type: 'error', message: 'An error occurred. Please try again.' });
+      setResponseMessage({ type: 'error', message: error.response?.data?.message || 'An error occurred. Please try again.' });
     }
   };
 
@@ -81,7 +80,8 @@ const Login = () => {
           <button type="submit">Log In</button>
         </form>
         <div className={styles.links}>
-          <a href="/register">Create account</a>
+          <Link to="/register">Create account</Link>
+          <Link to="/forgotpassword">Forgot password?</Link>
         </div>
       </div>
     </div>

@@ -5,9 +5,15 @@ import './Me.css';
 
 const Me = () => {
   const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedUser, setEditedUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = () => {
     const token = localStorage.getItem('jwt');
     axios.post('https://biblioteka.simonovicp.com/api/users/me', {}, {
       headers: {
@@ -18,11 +24,12 @@ const Me = () => {
     })
     .then(response => {
       setUser(response.data.data);
+      setEditedUser(response.data.data);
     })
     .catch(error => {
       console.error("There was an error fetching the user data!", error);
     });
-  }, []);
+  };
 
   const handleLogout = () => {
     const token = localStorage.getItem('jwt');
@@ -36,11 +43,42 @@ const Me = () => {
       if (response.data.success) {
         localStorage.removeItem('jwt');
         navigate('/login');
-        window.location.reload(); // Refresh the page after logout
+        window.location.reload();
       }
     })
     .catch(error => {
       console.error("There was an error logging out!", error);
+    });
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedUser(user);
+  };
+
+  const handleInputChange = (e) => {
+    setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = () => {
+    const token = localStorage.getItem('jwt');
+    axios.put('https://biblioteka.simonovicp.com/api/users/me', editedUser, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json; charset=utf-8',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      setUser(response.data.data);
+      setIsEditing(false);
+    })
+    .catch(error => {
+      console.error("There was an error updating the user data!", error);
     });
   };
 
@@ -50,14 +88,35 @@ const Me = () => {
 
   return (
     <div className="user-profile">
-      <h1>Me</h1>
+      <h1>My Profile</h1>
       <div className="user-info">
         <img src={user.photoPath} alt="Profile" />
-        <p>Username: {user.username}</p>
-        <p>Name: {user.name}</p>
-        <p>Surname: {user.surname}</p>
-        <p>Email: {user.email}</p>
-        <p>Role: {user.role}</p>
+        {isEditing ? (
+          <>
+            <input name="name" value={editedUser.name} onChange={handleInputChange} />
+            <input name="surname" value={editedUser.surname} onChange={handleInputChange} />
+            <input name="email" value={editedUser.email} onChange={handleInputChange} />
+            <input name="username" value={editedUser.username} onChange={handleInputChange} />
+            <input name="jmbg" value={editedUser.jmbg} onChange={handleInputChange} />
+            <input type="password" name="password" placeholder="New Password" onChange={handleInputChange} />
+            <input type="password" name="password_confirmation" placeholder="Confirm New Password" onChange={handleInputChange} />
+            <input name="photoPath" value={editedUser.photoPath} onChange={handleInputChange} />
+            <div className="button-group">
+              <button className="save-button" onClick={handleSave}>Save</button>
+              <button className="cancel-button" onClick={handleCancelEdit}>Cancel</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>Username: {user.username}</p>
+            <p>Name: {user.name}</p>
+            <p>Surname: {user.surname}</p>
+            <p>Email: {user.email}</p>
+            <p>Role: {user.role}</p>
+            <p>JMBG: {user.jmbg}</p>
+            <button className="edit-button" onClick={handleEdit}>Edit Profile</button>
+          </>
+        )}
       </div>
       <button className="logout-button" onClick={handleLogout}>Log Out</button>
     </div>
