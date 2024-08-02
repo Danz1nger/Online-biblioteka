@@ -13,7 +13,7 @@ const Register = () => {
   });
 
   const [responseMessage, setResponseMessage] = useState({ type: '', message: '' });
-  const API_TOKEN = process.env.REACT_APP_API_TOKEN;
+  const API_KEY = 'b3Rvcmlub2xhcmluZ29sb2dpamE=';
 
   const handleChange = (e) => {
     setFormData({
@@ -30,7 +30,7 @@ const Register = () => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json; charset=utf-8',
-        'Authorization': `Bearer ${API_TOKEN}`,
+        'Authorization': `Bearer ${API_KEY}`,
       },
       body: JSON.stringify(formData),
     });
@@ -66,6 +66,7 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            autoComplete="given-name"
           />
           <input
             type="text"
@@ -74,6 +75,7 @@ const Register = () => {
             value={formData.surname}
             onChange={handleChange}
             required
+            autoComplete="family-name"
           />
           <input
             type="email"
@@ -82,6 +84,7 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            autoComplete="email"
           />
           <input
             type="text"
@@ -90,6 +93,7 @@ const Register = () => {
             value={formData.username}
             onChange={handleChange}
             required
+            autoComplete="username"
           />
           <input
             type="password"
@@ -98,6 +102,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            autoComplete="new-password"
           />
           <input
             type="password"
@@ -106,6 +111,7 @@ const Register = () => {
             value={formData.password_confirmation}
             onChange={handleChange}
             required
+            autoComplete="new-password"
           />
           <input
             type="text"
@@ -114,6 +120,7 @@ const Register = () => {
             value={formData.device}
             onChange={handleChange}
             required
+            autoComplete="device-name"
           />
           <button type="submit">Register</button>
         </form>
