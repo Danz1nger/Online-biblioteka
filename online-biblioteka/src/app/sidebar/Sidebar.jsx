@@ -41,7 +41,7 @@ const Sidebar = ({ onToggle }) => {
             </a>
           </li>
           <li>
-            <a href="#students">
+            <a href="/ucenici">
               <FontAwesomeIcon icon={faUsers} />
               {isExpanded && <span>Students</span>}
             </a>

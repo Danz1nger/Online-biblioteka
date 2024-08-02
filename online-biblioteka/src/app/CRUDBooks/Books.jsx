@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Books.css'; // Create a CSS file for styling
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Paper, Checkbox, IconButton, Menu, MenuItem,
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import './Books.css';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBooks, setSelectedBooks] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
-    // Fetch books from API
     const fetchBooks = async () => {
       const token = localStorage.getItem('jwt');
       try {
@@ -22,10 +29,10 @@ const Books = () => {
           }
         });
         setBooks(response.data.data);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (err) {
         setError(err.message);
-        setLoading(false); // Set loading to false if there's an error
+        setLoading(false);
       }
     };
 
@@ -54,7 +61,45 @@ const Books = () => {
     });
   };
 
-  const filteredBooks = books.filter(book =>
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const handleMenuOpen = (event, book) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedBook(book);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedBook(null);
+  };
+
+  const sortedBooks = [...books].sort((a, b) => {
+    if (sortConfig.key) {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      if (sortConfig.key === 'title' || sortConfig.key === 'authors') {
+        aValue = aValue.toString().toLowerCase();
+        bValue = bValue.toString().toLowerCase();
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
+  const filteredBooks = sortedBooks.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -75,63 +120,75 @@ const Books = () => {
         <span className="search-icon">🔍</span>
       </div>
       <button className="new-book-btn">Nova Knjiga</button>
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <input
-                type="checkbox"
-                onChange={handleSelectAll}
-                checked={selectedBooks.length === books.length}
-              />
-            </th>
-            <th>Naziv Knjige</th>
-            <th>Autor</th>
-            <th>Kategorija</th>
-            <th>Na raspolaganju</th>
-            <th>Rezervisano</th>
-            <th>Izdato</th>
-            <th>U prekoračenju</th>
-            <th>Ukupna količina</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredBooks.map(book => (
-            <tr key={book.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedBooks.includes(book.id)}
-                  onChange={() => handleSelectBook(book.id)}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  onChange={handleSelectAll}
+                  checked={selectedBooks.length === books.length}
                 />
-              </td>
-              <td>{book.title}</td>
-              <td>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</td>
-              <td>{book.categories.map(category => category.name).join(', ')}</td>
-              <td>{book.samples}</td>
-              <td>{book.rSamples}</td>
-              <td>{book.bSamples}</td>
-              <td>{book.fSamples}</td>
-              <td>{book.samples}</td>
-              <td>
-                <div className="actions-menu">
-                  <button className="actions-button">⋮</button>
-                  <div className="dropdown-content">
-                    <button>Pogledaj</button>
-                    <button>Izmijeni</button>
-                    <button>Obriši</button>
-                    <button>Vrati</button>
-                    <button>Rezerviši</button>
-                    <button>Izdaj</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {loading && <div className="spinner"></div>} {/* Show spinner while loading */}
+              </TableCell>
+              <TableCell onClick={() => handleSort('title')}>
+                Naziv Knjige {sortConfig.key === 'title' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell onClick={() => handleSort('authors')}>
+                Autor {sortConfig.key === 'authors' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell>Kategorija</TableCell>
+              <TableCell onClick={() => handleSort('samples')}>
+                Na raspolaganju {sortConfig.key === 'samples' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell>Rezervisano</TableCell>
+              <TableCell>Izdato</TableCell>
+              <TableCell>U prekoračenju</TableCell>
+              <TableCell onClick={() => handleSort('samples')}>
+                Ukupna količina {sortConfig.key === 'samples' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredBooks.map(book => (
+              <TableRow key={book.id}>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selectedBooks.includes(book.id)}
+                    onChange={() => handleSelectBook(book.id)}
+                  />
+                </TableCell>
+                <TableCell>{book.title}</TableCell>
+                <TableCell>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</TableCell>
+                <TableCell>{book.categories.map(category => category.name).join(', ')}</TableCell>
+                <TableCell>{book.samples}</TableCell>
+                <TableCell>{book.rSamples}</TableCell>
+                <TableCell>{book.bSamples}</TableCell>
+                <TableCell>{book.fSamples}</TableCell>
+                <TableCell>{book.samples}</TableCell>
+                <TableCell align="right">
+                  <IconButton onClick={(event) => handleMenuOpen(event, book)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl) && selectedBook === book}
+                    onClose={handleMenuClose}
+                  >
+                    <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {loading && <div className="spinner"></div>}
     </div>
   );
 };

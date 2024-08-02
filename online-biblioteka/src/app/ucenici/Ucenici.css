@@ -1,4 +1,4 @@
-.books-container {
+.students-container {
   padding: 20px;
   font-family: Arial, sans-serif;
 }
@@ -8,7 +8,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-.new-book-btn {
+.new-student-btn {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -18,7 +18,7 @@ h1 {
   cursor: pointer;
 }
 
-.new-book-btn:hover {
+.new-student-btn:hover {
   background-color: #0056b3;
 }
 
