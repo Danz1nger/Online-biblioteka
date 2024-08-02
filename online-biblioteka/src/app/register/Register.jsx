@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styles from './Register.module.css';
 
 const Register = () => {
@@ -25,26 +26,28 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('https://biblioteka.simonovicp.com/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json; charset=utf-8',
-        'Authorization': `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await axios.post('https://biblioteka.simonovicp.com/api/register', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json; charset=utf-8',
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+      });
 
-    const responseData = await response.json();
+      const responseData = response.data;
 
-    if (responseData.success) {
-      // Store the token in local storage
-      localStorage.setItem('jwt', responseData.data.token);
-      setResponseMessage({ type: 'success', message: responseData.message });
-      // Refresh the site
-      window.location.reload();
-    } else {
-      setResponseMessage({ type: 'error', message: responseData.message || 'Failed to create account' });
+      if (responseData.success) {
+        // Store the token in local storage
+        localStorage.setItem('jwt', responseData.data.token);
+        setResponseMessage({ type: 'success', message: responseData.message });
+        // Refresh the site
+        window.location.reload();
+      } else {
+        setResponseMessage({ type: 'error', message: responseData.message || 'Failed to create account' });
+      }
+    } catch (error) {
+      setResponseMessage({ type: 'error', message: error.response?.data?.message || 'An error occurred while creating the account' });
     }
   };
 

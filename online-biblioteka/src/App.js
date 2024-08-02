@@ -1,14 +1,16 @@
 import React from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
-import Header from './app/header/Header'; // Adjust the path as needed
+import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
 import Settings from './app/components/Settings';
 import Me from './app/me/Me';
-import Login from './app/login/Login'; // Adjust the path as needed
+import Login from './app/login/Login';
 import Register from './app/register/Register';
+import ForgotPassword from './app/login/ForgotPassword';
 import Books from './app/CRUDBooks/Books';
-import Ucenici from './app/ucenici/Ucenici'; // Import the new component
-import NoviUcenik from './app/ucenici/NoviUcenik'; // Import the new component
+import Ucenici from './app/ucenici/Ucenici';
+import NoviUcenik from './app/ucenici/NoviUcenik';
+import Ucenik from './app/ucenici/Ucenik';
 import './App.css';
 
 const App = () => {
@@ -20,7 +22,7 @@ const App = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
 
-  const isAuthRoute = ['/login', '/register'].includes(location.pathname);
+  const isAuthRoute = ['/login', '/register', '/forgotpassword'].includes(location.pathname);
   const showHeader = isAuthenticated || !isAuthRoute;
 
   return (
@@ -33,10 +35,12 @@ const App = () => {
             <Routes>
               <Route path="/me" element={<Me />} />
               <Route path="/" element={<Settings />} />
-              <Route path="*" element={<Navigate to="/" />} />
               <Route path="/books" element={<Books />} />
               <Route path="/ucenici" element={<Ucenici />} />
-              <Route path="/ucenici/noviucenik" element={<NoviUcenik />} /> {/* Add the new route */}
+              <Route path="/ucenici/noviucenik" element={<NoviUcenik />} />
+              <Route path="/ucenici/ucenik/:id" element={<Ucenik />} />
+              <Route path="/ucenici/ucenik/:id/edit" element={<Ucenik />} />
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
         </div>
@@ -44,6 +48,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       )}
