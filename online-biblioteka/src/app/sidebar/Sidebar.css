@@ -29,7 +29,7 @@
 }
 
 .sidebar-nav ul li {
-  padding: 18px 30px;
+  padding: 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -46,6 +46,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  padding: 18px 30px;
 }
 
 .sidebar-nav ul li a span {
@@ -54,7 +55,7 @@
   transition: opacity 1s;
 }
 
-/* New styles for active state */
+/* Styles for active state */
 .sidebar-nav ul li a.active {
   background-color: #2196F3;
   color: white;

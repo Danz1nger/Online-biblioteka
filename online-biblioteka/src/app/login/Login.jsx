@@ -9,14 +9,17 @@ const Login = () => {
   const [responseMessage, setResponseMessage] = useState({ type: '', message: '' });
   const navigate = useNavigate();
 
+  const API_URL = 'https://biblioteka.simonovicp.com/api/login';
+  const API_KEY = 'b3Rvcmlub2xhcmluZ29sb2dpamE=';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}`, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_TOKEN}`
+          'Authorization': `Bearer ${API_KEY}`
         },
         body: JSON.stringify({
           username: username,
