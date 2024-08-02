@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const NoviUcenik = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -15,6 +17,7 @@ const NoviUcenik = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
@@ -57,7 +60,12 @@ const NoviUcenik = () => {
           'Authorization': `Bearer ${token}`,
         }
       });
-      console.log(response.data);
+      if (response.data.success) {
+        setSuccessMessage(response.data.message);
+        setTimeout(() => {
+          navigate('/ucenici');
+        }, 2000);
+      }
     } catch (error) {
       setApiError('Došlo je do greške prilikom slanja podataka. Molimo pokušajte ponovo.');
       console.error(error);
@@ -77,6 +85,7 @@ const NoviUcenik = () => {
     });
     setErrors({});
     setApiError('');
+    setSuccessMessage('');
   };
 
   const toggleShowPassword = () => {
@@ -202,6 +211,7 @@ const NoviUcenik = () => {
         </div>
       </form>
       {apiError && <div className="error">{apiError}</div>}
+      {successMessage && <div className="success">{successMessage}</div>}
       <style jsx>{`
         .input-group {
           display: flex;
@@ -231,7 +241,7 @@ const NoviUcenik = () => {
         }
         .password-container {
           position: relative;
-          width: 100%;
+          width: 790px;
         }
         .eye-icon {
           position: absolute;
@@ -275,6 +285,10 @@ const NoviUcenik = () => {
         }
         .error {
           color: red;
+          margin-top: 5px;
+        }
+        .success {
+          color: green;
           margin-top: 5px;
         }
       `}</style>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
@@ -16,7 +16,7 @@ const Sidebar = ({ onToggle }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = (e) => {
-    e.stopPropagation();  // Prevent event bubbling
+    e.stopPropagation();
     setIsExpanded(!isExpanded);
     onToggle();
   };
@@ -27,48 +27,50 @@ const Sidebar = ({ onToggle }) => {
         <FontAwesomeIcon icon={faBars} />
       </div>
       <nav className="sidebar-nav">
-        <ul>
+        <ul className="main-menu">
           <li>
-            <a href="#dashboard">
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faTachometerAlt} />
               {isExpanded && <span>Dashboard</span>}
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="#librarians">
+            <NavLink to="/librarians" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faAddressBook} />
               {isExpanded && <span>Librarians</span>}
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="/ucenici">
+            <NavLink to="/ucenici" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faUsers} />
               {isExpanded && <span>Students</span>}
-            </a>
+            </NavLink>
           </li>
           <li>
-            <Link to="/books">
+            <NavLink to="/books" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faCopy} />
               {isExpanded && <span>Books</span>}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <a href="#authors">
+            <NavLink to="/authors" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faAddressBook} />
               {isExpanded && <span>Authors</span>}
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="#publishing">
+            <NavLink to="/publishing" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faExchangeAlt} />
               {isExpanded && <span>Book Publishing</span>}
-            </a>
+            </NavLink>
           </li>
+        </ul>
+        <ul className="bottom-menu">
           <li>
-            <a href="/">
+            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faCog} />
               {isExpanded && <span>Settings</span>}
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>

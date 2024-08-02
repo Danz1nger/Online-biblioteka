@@ -42,6 +42,24 @@ const Ucenici = () => {
     fetchStudents();
   }, []);
 
+  const handleDeleteUser = async (userId) => {
+    const token = localStorage.getItem('jwt');
+    try {
+      await axios.delete(`https://biblioteka.simonovicp.com/api/users/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json; charset=utf-8',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setStudents(students.filter(student => student.id !== userId));
+      handleMenuClose();
+    } catch (err) {
+      console.error('Error deleting user:', err);
+      // Optionally, you can set an error state and display it to the user
+    }
+  };
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -77,11 +95,16 @@ const Ucenici = () => {
     setSelectedStudent(student);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setSelectedStudent(null);
+  const handleMenuClose = (action) => {
+    if (action === 'delete' && selectedStudent) {
+      handleDeleteUser(selectedStudent.id);
+    } else {
+      setAnchorEl(null);
+      setSelectedStudent(null);
+    }
   };
 
+  // Sort and filter students
   const sortedStudents = [...students].sort((a, b) => {
     if (sortConfig.key) {
       let aValue = a[sortConfig.key];
@@ -158,7 +181,7 @@ const Ucenici = () => {
                   </div>
                 </TableCell>
                 <TableCell>{student.email}</TableCell>
-                <TableCell>{student.userType}</TableCell>
+                <TableCell>{student.role}</TableCell>
                 <TableCell>{student.lastAccess}</TableCell>
                 <TableCell align="right">
                   <IconButton onClick={(event) => handleMenuOpen(event, student)}>
@@ -167,11 +190,11 @@ const Ucenici = () => {
                   <Menu
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl) && selectedStudent === student}
-                    onClose={handleMenuClose}
+                    onClose={() => handleMenuClose()}
                   >
-                    <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
+                    <MenuItem onClick={() => handleMenuClose()}>Pogledaj</MenuItem>
+                    <MenuItem onClick={() => handleMenuClose()}>Izmijeni</MenuItem>
+                    <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
                   </Menu>
                 </TableCell>
               </TableRow>

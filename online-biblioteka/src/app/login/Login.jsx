@@ -30,7 +30,6 @@ const Login = () => {
         localStorage.setItem('jwt', data.data.token);
         setResponseMessage({ type: 'success', message: data.message });
         navigate('/'); // Redirect to the home page
-        window.location.reload(); // Reload the site
       } else {
         setResponseMessage({ type: 'error', message: data.message || 'Login failed' });
       }
@@ -51,6 +50,8 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
+            name="username"
+            id="username"
             placeholder="Enter your username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -58,6 +59,8 @@ const Login = () => {
           />
           <input
             type="password"
+            name="password"
+            id="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -65,6 +68,8 @@ const Login = () => {
           />
           <input
             type="text"
+            name="device"
+            id="device"
             placeholder="Enter your device"
             value={device}
             onChange={(e) => setDevice(e.target.value)}

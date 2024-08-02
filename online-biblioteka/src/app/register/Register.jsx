@@ -66,6 +66,7 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            autocomplete="given-name"
           />
           <input
             type="text"
@@ -74,6 +75,7 @@ const Register = () => {
             value={formData.surname}
             onChange={handleChange}
             required
+            autocomplete="family-name"
           />
           <input
             type="email"
@@ -82,6 +84,7 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            autocomplete="email"
           />
           <input
             type="text"
@@ -90,6 +93,7 @@ const Register = () => {
             value={formData.username}
             onChange={handleChange}
             required
+            autocomplete="username"
           />
           <input
             type="password"
@@ -98,6 +102,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            autocomplete="new-password"
           />
           <input
             type="password"
@@ -106,6 +111,7 @@ const Register = () => {
             value={formData.password_confirmation}
             onChange={handleChange}
             required
+            autocomplete="new-password"
           />
           <input
             type="text"
@@ -114,6 +120,7 @@ const Register = () => {
             value={formData.device}
             onChange={handleChange}
             required
+            autocomplete="device-name"
           />
           <button type="submit">Register</button>
         </form>

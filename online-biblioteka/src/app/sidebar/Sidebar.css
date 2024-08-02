@@ -2,12 +2,12 @@
   width: 80px;
   transition: width 0.3s;
   background-color: #EAEAEA;
-  height: calc(100vh - 60px); /* Visina sidebar-a minus visina header-a */
+  height: calc(100vh - 60px);
   overflow: hidden;
   position: fixed;
-  top: 60px; /* Visina header-a */
+  top: 60px;
   left: 0;
-  z-index: 999; /* Ispod header-a */
+  z-index: 999;
 }
 
 .sidebar.expanded {
@@ -20,7 +20,7 @@
   padding: 28px 30px;
   font-size: 25px;
   border-bottom: 1px solid #e4dfdf;
-  user-select: none; /* Prevent selection */
+  user-select: none;
 }
 
 .sidebar-nav ul {
@@ -45,10 +45,21 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .sidebar-nav ul li a span {
   display: inline-block;
   margin-left: 15px;
   transition: opacity 1s;
+}
+
+/* New styles for active state */
+.sidebar-nav ul li a.active {
+  background-color: #2196F3;
+  color: white;
+}
+
+.sidebar-nav ul li a.active svg {
+  color: white;
 }
