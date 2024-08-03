@@ -1,7 +1,7 @@
 .header {
   background-color: #2196F3;
   color: white;
-  padding: 20px 20px; /* Increased the top and bottom padding to make the header thicker */
+  padding: 20px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000; /* Ensure the header is above other elements */
+  z-index: 1000;
 }
 
 .logo {
@@ -36,11 +36,20 @@
 .user-info-header {
   display: flex;
   align-items: center;
-  margin-right: 30px; /* This creates the 30px distance */
+  margin-right: 30px;
 }
 
-.notification-icon, .user-avatar {
+.notification-icon {
   width: 24px;
   height: 24px;
   cursor: pointer;
+  margin-right: 30px; /* Adds space between the notification icon and user avatar */
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  object-fit: cover;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Me.css';
 
 const Me = () => {
@@ -115,6 +115,14 @@ const Me = () => {
             <p>Role: {user.role}</p>
             <p>JMBG: {user.jmbg}</p>
             <button className="edit-button" onClick={handleEdit}>Edit Profile</button>
+            <div className="record-buttons">
+              <Link to="/me/izdavanje" className="record-button izdavanja">
+                Evidencija izdavanja
+              </Link>
+              <Link to="/me/rezervacija" className="record-button rezervacija">
+                Evidencija rezervacija
+              </Link>
+            </div>
           </>
         )}
       </div>
