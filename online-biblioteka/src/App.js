@@ -11,6 +11,8 @@ import Books from './app/CRUDBooks/Books';
 import Ucenici from './app/ucenici/Ucenici';
 import NoviUcenik from './app/ucenici/NoviUcenik';
 import Ucenik from './app/ucenici/Ucenik';
+import EvidencijaIzdavanja from './app/components/EvidencijaIzdavanja';
+import EvidencijaRezervacija from './app/components/EvidencijaRezervacija';
 import './App.css';
 
 const App = () => {
@@ -40,6 +42,8 @@ const App = () => {
               <Route path="/ucenici/noviucenik" element={<NoviUcenik />} />
               <Route path="/ucenici/ucenik/:id" element={<Ucenik />} />
               <Route path="/ucenici/ucenik/:id/edit" element={<Ucenik />} />
+              <Route path="/me/izdavanje" element={<EvidencijaIzdavanja />} />
+              <Route path="/me/rezervacija" element={<EvidencijaRezervacija />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
