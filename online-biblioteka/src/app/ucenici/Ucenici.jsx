@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
@@ -31,7 +31,6 @@ const Ucenici = () => {
             'Authorization': `Bearer ${token}`
           }
         });
-        // Filter users to keep only those with role "Učenik"
         const filteredStudents = response.data.data.filter(user => user.role === "Učenik");
         setStudents(filteredStudents);
         setLoading(false);
@@ -136,82 +135,86 @@ const Ucenici = () => {
   return (
     <div className="students-container">
       <h1>Učenici</h1>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Pretraži učenike..."
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <span className="search-icon">🔍</span>
+      <div className="actions-container">
+        <NavLink to="/ucenici/noviucenik" className="new-student-btn">Novi Učenik</NavLink>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Pretraži učenike..."
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <span className="search-icon">🔍</span>
+        </div>
       </div>
-      <button className="new-student-btn">Novi Učenik</button>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  onChange={handleSelectAll}
-                  checked={selectedStudents.length === students.length}
-                />
-              </TableCell>
-              <TableCell onClick={() => handleSort('name')}>
-                Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Razred</TableCell>
-              <TableCell>Odjeljenje</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
+      <div className="table-container">
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell colSpan={6} align="center">
-                  <div className="spinner-container">
-                    <div className="spinner"></div>
-                  </div>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    onChange={handleSelectAll}
+                    checked={selectedStudents.length === students.length}
+                  />
                 </TableCell>
+                <TableCell onClick={() => handleSort('name')}>
+                  Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Razred</TableCell>
+                <TableCell>Odjeljenje</TableCell>
+                <TableCell />
               </TableRow>
-            ) : (
-              filteredStudents.map(student => (
-                <TableRow key={student.id}>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedStudents.includes(student.id)}
-                      onChange={() => handleSelectStudent(student.id)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Avatar src={student.photoPath} alt={`${student.name} ${student.surname}`} />
-                      <span style={{ marginLeft: '10px' }}>{`${student.name} ${student.surname}`}</span>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    <div className="spinner-container">
+                      <div className="spinner"></div>
                     </div>
                   </TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>{student.razred}</TableCell>
-                  <TableCell>{student.odjeljenje}</TableCell>
-                  <TableCell align="right">
-                    <IconButton onClick={(event) => handleMenuOpen(event, student)}>
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl) && selectedStudent === student}
-                      onClose={handleMenuClose}
-                    >
-                      <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
-                      <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
-                      <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
-                    </Menu>
-                  </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              ) : (
+                filteredStudents.map(student => (
+                  <TableRow key={student.id}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedStudents.includes(student.id)}
+                        onChange={() => handleSelectStudent(student.id)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar src={student.photoPath} alt={`${student.name} ${student.surname}`} />
+                        <span style={{ marginLeft: '10px' }}>{`${student.name} ${student.surname}`}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{student.email}</TableCell>
+                    <TableCell>{student.razred}</TableCell>
+                    <TableCell>{student.odjeljenje}</TableCell>
+                    <TableCell align="right">
+                      <IconButton onClick={(event) => handleMenuOpen(event, student)}>
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && selectedStudent === student}
+                        onClose={() => handleMenuClose()}
+                      >
+                        <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
+                        <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
+                        <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
       {error && <div className="error-message">Error: {error}</div>}
     </div>
   );
