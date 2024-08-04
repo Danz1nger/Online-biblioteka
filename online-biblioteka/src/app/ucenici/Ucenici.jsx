@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar, CircularProgress
+  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Ucenici.css';
@@ -114,9 +114,9 @@ const Ucenici = () => {
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
 
-      if (sortConfig.key === 'name' || sortConfig.key === 'surname') {
-        aValue = aValue.toString().toLowerCase();
-        bValue = bValue.toString().toLowerCase();
+      if (sortConfig.key === 'name') {
+        aValue = `${a.name} ${a.surname}`.toLowerCase();
+        bValue = `${b.name} ${b.surname}`.toLowerCase();
       }
 
       if (aValue < bValue) {
@@ -133,10 +133,6 @@ const Ucenici = () => {
     `${student.name} ${student.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <div className="students-container">
       <h1>Učenici</h1>
@@ -146,73 +142,77 @@ const Ucenici = () => {
           placeholder="Pretraži učenike..."
           value={searchTerm}
           onChange={handleSearch}
-          aria-label="Search students"
         />
-        <span className="search-icon" aria-hidden="true">🔍</span>
+        <span className="search-icon">🔍</span>
       </div>
-      <button className="new-student-btn" onClick={() => navigate('/ucenici/noviucenik')}>Novi Učenik</button>
-      {loading ? (
-        <div className="spinner-container">
-          <CircularProgress />
-        </div>
-      ) : (
-        <TableContainer component={Paper}>
-          <Table aria-label="Students table">
-            <TableHead>
+      <button className="new-student-btn">Novi Učenik</button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  onChange={handleSelectAll}
+                  checked={selectedStudents.length === students.length}
+                />
+              </TableCell>
+              <TableCell onClick={() => handleSort('name')}>
+                Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Razred</TableCell>
+              <TableCell>Odjeljenje</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    onChange={handleSelectAll}
-                    checked={selectedStudents.length === students.length}
-                    aria-label="Select all students"
-                  />
+                <TableCell colSpan={6} align="center">
+                  <div className="spinner-container">
+                    <div className="spinner"></div>
+                  </div>
                 </TableCell>
-                <TableCell onClick={() => handleSort('name')}>
-                  Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                </TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Zadnji pristup sistemu</TableCell>
-                <TableCell />
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredStudents.map(student => (
+            ) : (
+              filteredStudents.map(student => (
                 <TableRow key={student.id}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedStudents.includes(student.id)}
                       onChange={() => handleSelectStudent(student.id)}
-                      aria-label={`Select ${student.name} ${student.surname}`}
                     />
                   </TableCell>
                   <TableCell>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Avatar src={student.photoPath || 'https://biblioteka.simonovicp.com/img/profile.jpg'} alt={`${student.name} ${student.surname}`} />
-                      <span style={{ marginLeft: '8px' }}>{`${student.name} ${student.surname}`}</span>
+                      <Avatar src={student.photoPath} alt={`${student.name} ${student.surname}`} />
+                      <span style={{ marginLeft: '10px' }}>{`${student.name} ${student.surname}`}</span>
                     </div>
                   </TableCell>
                   <TableCell>{student.email}</TableCell>
-                  <TableCell>{student.lastAccess}</TableCell>
+                  <TableCell>{student.razred}</TableCell>
+                  <TableCell>{student.odjeljenje}</TableCell>
                   <TableCell align="right">
-                    <IconButton onClick={(event) => handleMenuOpen(event, student)} aria-label="More options">
+                    <IconButton onClick={(event) => handleMenuOpen(event, student)}>
                       <MoreVertIcon />
                     </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl) && selectedStudent === student}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
+                      <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
+                      <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
+                    </Menu>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl) && selectedStudent !== null}
-        onClose={() => handleMenuClose()}
-      >
-        <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
-        <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
-        <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem>
-      </Menu>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {error && <div className="error-message">Error: {error}</div>}
     </div>
   );
 };

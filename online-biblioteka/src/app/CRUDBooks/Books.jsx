@@ -150,45 +150,54 @@ const Books = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredBooks.map(book => (
-              <TableRow key={book.id}>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedBooks.includes(book.id)}
-                    onChange={() => handleSelectBook(book.id)}
-                  />
-                </TableCell>
-                <TableCell>{book.title}</TableCell>
-                <TableCell>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</TableCell>
-                <TableCell>{book.categories.map(category => category.name).join(', ')}</TableCell>
-                <TableCell>{book.samples}</TableCell>
-                <TableCell>{book.rSamples}</TableCell>
-                <TableCell>{book.bSamples}</TableCell>
-                <TableCell>{book.fSamples}</TableCell>
-                <TableCell>{book.samples}</TableCell>
-                <TableCell align="right">
-                  <IconButton onClick={(event) => handleMenuOpen(event, book)}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && selectedBook === book}
-                    onClose={handleMenuClose}
-                  >
-                    <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
-                  </Menu>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={10} align="center">
+                  <div className="spinner-container">
+                    <div className="spinner"></div>
+                  </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredBooks.map(book => (
+                <TableRow key={book.id}>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedBooks.includes(book.id)}
+                      onChange={() => handleSelectBook(book.id)}
+                    />
+                  </TableCell>
+                  <TableCell>{book.title}</TableCell>
+                  <TableCell>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</TableCell>
+                  <TableCell>{book.categories.map(category => category.name).join(', ')}</TableCell>
+                  <TableCell>{book.samples}</TableCell>
+                  <TableCell>{book.rSamples}</TableCell>
+                  <TableCell>{book.bSamples}</TableCell>
+                  <TableCell>{book.fSamples}</TableCell>
+                  <TableCell>{book.samples}</TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={(event) => handleMenuOpen(event, book)}>
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl) && selectedBook === book}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-      {loading && <div className="spinner"></div>}
     </div>
   );
 };

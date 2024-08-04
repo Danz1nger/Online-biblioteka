@@ -2,7 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
-import Spinner from './app/components/Spinner';
+import Spinner from '../src/app/components/Spinner'; // For authenticated fallback
+import ImageFallback from '../src/app//components/ImageFallback'; // Import the ImageFallback component
 import './App.css';
 
 // Lazy loading components
@@ -54,7 +55,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<ImageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
