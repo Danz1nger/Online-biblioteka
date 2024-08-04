@@ -3,7 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar
+  Paper, Checkbox, IconButton, Menu, MenuItem, Avatar,
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Ucenici.css';
@@ -17,6 +18,7 @@ const Ucenici = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -98,14 +100,27 @@ const Ucenici = () => {
 
   const handleMenuClose = (action) => {
     if (action === 'delete' && selectedStudent) {
-      handleDeleteUser(selectedStudent.id);
+      setOpenDeleteDialog(true);
     } else if (action === 'view' && selectedStudent) {
       navigate(`/ucenici/ucenik/${selectedStudent.id}`);
     } else if (action === 'edit' && selectedStudent) {
       navigate(`/ucenici/ucenik/${selectedStudent.id}/edit`);
+    } else {
+      setAnchorEl(null);
+      setSelectedStudent(null);
     }
-    setAnchorEl(null);
-    setSelectedStudent(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (selectedStudent) {
+      await handleDeleteUser(selectedStudent.id);
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+    handleMenuClose();
   };
 
   const sortedStudents = [...students].sort((a, b) => {
@@ -216,6 +231,28 @@ const Ucenici = () => {
         </TableContainer>
       </div>
       {error && <div className="error-message">Error: {error}</div>}
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleDeleteCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this user? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
