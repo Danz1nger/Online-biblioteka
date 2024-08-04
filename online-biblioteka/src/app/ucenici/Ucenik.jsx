@@ -3,8 +3,10 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Card, CardContent, Typography, Avatar, List, ListItem, 
-  ListItemText, Divider, CircularProgress, Button, TextField
+  ListItemText, Divider, CircularProgress, Button, TextField,
+  IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/system';
 import './Ucenici.css';
 
@@ -13,6 +15,7 @@ const StyledCard = styled(Card)({
   margin: '20px auto',
   padding: '20px',
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  position: 'relative',
 });
 
 const StyledAvatar = styled(Avatar)({
@@ -37,6 +40,7 @@ const Ucenik = () => {
   const [error, setError] = useState(null);
   const [editMode, setEditMode] = useState(location.pathname.endsWith('/edit'));
   const [editedStudent, setEditedStudent] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const fetchStudentData = useCallback(async () => {
     const token = localStorage.getItem('jwt');
@@ -99,6 +103,31 @@ const Ucenik = () => {
     }
   };
 
+  const handleDeleteClick = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    const token = localStorage.getItem('jwt');
+    try {
+      await axios.delete(`https://biblioteka.simonovicp.com/api/users/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      navigate('/ucenici');
+    } catch (err) {
+      setError(err.message);
+    }
+    setOpenDeleteDialog(false);
+  };
+
   if (loading) return (
     <div className="students-container">
       <div className="spinner-container">
@@ -122,6 +151,18 @@ const Ucenik = () => {
   return (
     <div className="students-container">
       <StyledCard>
+        <IconButton 
+          aria-label="delete"
+          onClick={handleDeleteClick}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            color: 'red'
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
         <CardContent>
           <StyledAvatar 
             src={editMode ? editedStudent.photoPath : student.photoPath || 'https://biblioteka.simonovicp.com/img/profile.jpg'} 
@@ -243,6 +284,28 @@ const Ucenik = () => {
           )}
         </CardContent>
       </StyledCard>
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this user? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
