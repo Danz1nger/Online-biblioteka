@@ -1,11 +1,10 @@
-// ImageFallback.jsx
 import React from 'react';
 
 const ImageFallback = () => (
   <div style={{ 
     width: '100vw', 
     height: '100vh', 
-    backgroundImage: 'url(/public/background.jpg)', 
+    backgroundImage: 'url(/background.jpg)', 
     backgroundSize: 'cover', 
     backgroundPosition: 'center',
     display: 'flex',
