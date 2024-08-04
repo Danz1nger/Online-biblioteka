@@ -116,6 +116,7 @@ const Me = () => {
             <p>Role: {user.role}</p>
             <p>JMBG: {user.jmbg}</p>
             <button className="edit-button" onClick={handleEdit}>Edit Profile</button>
+            <div className="separator"></div>
             <div className="record-buttons">
               <Link to="/me/izdavanje" className="record-button izdavanja">
                 Evidencija izdavanja
