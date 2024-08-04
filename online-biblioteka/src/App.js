@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
+import Spinner from './app/components/Spinner';
 import './App.css';
 
 // Lazy loading components
@@ -36,7 +37,7 @@ const App = () => {
         <div className={`main-container-app ${isSidebarExpanded ? 'expanded' : ''}`}>
           <Sidebar onToggle={handleSidebarToggle} />
           <div className="content">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Spinner />}>
               <Routes>
                 <Route path="/me" element={<Me />} />
                 <Route path="/" element={<Settings />} />
@@ -53,7 +54,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
