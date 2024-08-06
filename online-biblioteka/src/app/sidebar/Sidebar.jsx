@@ -35,7 +35,7 @@ const Sidebar = ({ onToggle }) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/librarians" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink to="/bibliotekari" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faAddressBook} />
               {isExpanded && <span>Librarians</span>}
             </NavLink>
