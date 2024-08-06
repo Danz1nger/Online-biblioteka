@@ -4,6 +4,7 @@ import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
 import Spinner from '../src/app/components/Spinner'; // For authenticated fallback
 import ImageFallback from '../src/app//components/ImageFallback'; // Import the ImageFallback component
+import ScrollToTop from './app/components/ScrollToTop'; // Import the ScrollToTop component
 import './App.css';
 
 // Lazy loading components
@@ -33,6 +34,7 @@ const App = () => {
 
   return (
     <div className={`App ${showHeader ? '' : 'no-header'}`}>
+      <ScrollToTop />
       {showHeader && <Header />}
       {isAuthenticated ? (
         <div className={`main-container-app ${isSidebarExpanded ? 'expanded' : ''}`}>
