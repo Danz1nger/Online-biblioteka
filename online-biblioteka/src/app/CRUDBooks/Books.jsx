@@ -28,7 +28,14 @@ const Books = () => {
             'Authorization': `Bearer ${token}`
           }
         });
-        setBooks(response.data.data);
+        
+        const booksData = response.data.data.map(book => {
+          if (book.photo === 'https://biblioteka.simonovicp.com/img/profile.jpg') {
+            return { ...book, photo: 'book.png' };
+          }
+          return book;
+        });
+        setBooks(booksData);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -69,6 +76,20 @@ const Books = () => {
     setSortConfig({ key, direction });
   };
 
+  const sortedBooks = [...books].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const filteredBooks = sortedBooks.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleMenuOpen = (event, book) => {
     setAnchorEl(event.currentTarget);
     setSelectedBook(book);
@@ -79,122 +100,90 @@ const Books = () => {
     setSelectedBook(null);
   };
 
-  const sortedBooks = [...books].sort((a, b) => {
-    if (sortConfig.key) {
-      let aValue = a[sortConfig.key];
-      let bValue = b[sortConfig.key];
-
-      if (sortConfig.key === 'title' || sortConfig.key === 'authors') {
-        aValue = aValue.toString().toLowerCase();
-        bValue = bValue.toString().toLowerCase();
-      }
-
-      if (aValue < bValue) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-    }
-    return 0;
-  });
-
-  const filteredBooks = sortedBooks.filter(book =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <p>{error}</p>;
   }
 
   return (
     <div className="books-container">
-      <h1>Knjige</h1>
+      <h1>Books List</h1>
       <div className="search-container">
         <input
           type="text"
-          placeholder="Pretraži knjige..."
+          placeholder="Search..."
           value={searchTerm}
           onChange={handleSearch}
         />
-        <span className="search-icon">🔍</span>
       </div>
-      <button className="new-book-btn">Nova Knjiga</button>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
+                  indeterminate={selectedBooks.length > 0 && selectedBooks.length < books.length}
+                  checked={books.length > 0 && selectedBooks.length === books.length}
                   onChange={handleSelectAll}
-                  checked={selectedBooks.length === books.length}
                 />
               </TableCell>
-              <TableCell onClick={() => handleSort('title')}>
-                Naziv Knjige {sortConfig.key === 'title' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell onClick={() => handleSort('authors')}>
-                Autor {sortConfig.key === 'authors' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell>Kategorija</TableCell>
-              <TableCell onClick={() => handleSort('samples')}>
-                Na raspolaganju {sortConfig.key === 'samples' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell>Rezervisano</TableCell>
-              <TableCell>Izdato</TableCell>
-              <TableCell>U prekoračenju</TableCell>
-              <TableCell onClick={() => handleSort('samples')}>
-                Ukupna količina {sortConfig.key === 'samples' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-              </TableCell>
-              <TableCell />
+              <TableCell onClick={() => handleSort('title')}>Title</TableCell>
+              <TableCell>Authors</TableCell>
+              <TableCell>Categories</TableCell>
+              <TableCell onClick={() => handleSort('samples')}>Samples</TableCell>
+              <TableCell onClick={() => handleSort('rSamples')}>Reserved Samples</TableCell>
+              <TableCell onClick={() => handleSort('bSamples')}>Borrowed Samples</TableCell>
+              <TableCell onClick={() => handleSort('fSamples')}>Free Samples</TableCell>
+              <TableCell onClick={() => handleSort('samples')}>Total Samples</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={10} align="center">
-                  <div className="spinner-container">
-                    <div className="spinner"></div>
-                  </div>
+            {filteredBooks.map(book => (
+              <TableRow key={book.id}>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selectedBooks.includes(book.id)}
+                    onChange={() => handleSelectBook(book.id)}
+                  />
+                </TableCell>
+                <TableCell className="title-cell" style={{ width: `${book.title.length * 10}px` }}>
+                  <img src={book.photo} alt="book cover" style={{ width: '50px' }} />
+                  {book.title}
+                </TableCell>
+                <TableCell>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</TableCell>
+                <TableCell>{book.categories.map(category => category.name).join(', ')}</TableCell>
+                <TableCell>{book.samples}</TableCell>
+                <TableCell>{book.rSamples}</TableCell>
+                <TableCell>{book.bSamples}</TableCell>
+                <TableCell>{book.fSamples}</TableCell>
+                <TableCell>{book.samples}</TableCell>
+                <TableCell align="right">
+                  <IconButton onClick={(event) => handleMenuOpen(event, book)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl) && selectedBook === book}
+                    onClose={handleMenuClose}
+                  >
+                    <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
+                    <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
+                  </Menu>
                 </TableCell>
               </TableRow>
-            ) : (
-              filteredBooks.map(book => (
-                <TableRow key={book.id}>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedBooks.includes(book.id)}
-                      onChange={() => handleSelectBook(book.id)}
-                    />
-                  </TableCell>
-                  <TableCell>{book.title}</TableCell>
-                  <TableCell>{book.authors.map(author => `${author.name} ${author.surname}`).join(', ')}</TableCell>
-                  <TableCell>{book.categories.map(category => category.name).join(', ')}</TableCell>
-                  <TableCell>{book.samples}</TableCell>
-                  <TableCell>{book.rSamples}</TableCell>
-                  <TableCell>{book.bSamples}</TableCell>
-                  <TableCell>{book.fSamples}</TableCell>
-                  <TableCell>{book.samples}</TableCell>
-                  <TableCell align="right">
-                    <IconButton onClick={(event) => handleMenuOpen(event, book)}>
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl) && selectedBook === book}
-                      onClose={handleMenuClose}
-                    >
-                      <MenuItem onClick={handleMenuClose}>Pogledaj</MenuItem>
-                      <MenuItem onClick={handleMenuClose}>Izmijeni</MenuItem>
-                      <MenuItem onClick={handleMenuClose}>Obriši</MenuItem>
-                      <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
-                      <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
-                      <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
