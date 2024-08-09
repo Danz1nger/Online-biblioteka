@@ -3,6 +3,7 @@ import './Settings.css';
 import BookCover from './BookCover';
 import BookLetter from './BookLetter';
 import BookFormat from './BookFormat';
+import BookCategories from './BookCategories'; // Import the BookCategories component
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('policy');
@@ -15,6 +16,8 @@ const Settings = () => {
         return <BookLetter />;
       case 'format':
         return <BookFormat />;
+      case 'categories':
+        return <BookCategories />; // Render the BookCategories component when the 'categories' tab is active
       // Add cases for other tabs as needed
       default:
         return <div>Select a tab to view content</div>;
