@@ -5,6 +5,9 @@ import Sidebar from './app/sidebar/Sidebar';
 import Spinner from '../src/app/components/Spinner'; // For authenticated fallback
 import ImageFallback from '../src/app//components/ImageFallback'; // Import the ImageFallback component
 import './App.css';
+import Authors from './app/Authors/Authors';
+import NewAuthor from './app/Authors/NewAuthor';
+import AuthorDetails from './app/Authors/AuthorDetails';
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -50,6 +53,10 @@ const App = () => {
                 <Route path="/me/izdavanje" element={<EvidencijaIzdavanja />} />
                 <Route path="/me/rezervacija" element={<EvidencijaRezervacija />} />
                 <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/authors" element={<Authors />} />
+                <Route path= "/authors/add" element={<NewAuthor/>}/>
+                <Route path="/authors/author/:id" element={<AuthorDetails />} />
+
               </Routes>
             </Suspense>
           </div>

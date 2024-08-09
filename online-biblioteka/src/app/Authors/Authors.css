@@ -1,0 +1,114 @@
+/* Bibliotekari.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    padding: 0;
+  }
+  
+ 
+ 
+  
+  .authori-content {
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 5px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .new-author-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+   /* display: flex;*/
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    
+
+  }
+  
+  .new-author-btn svg {
+    margin-right: 8px;
+  }
+  
+  .authori-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .authori-table th,
+  .authori-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .authori-table th {
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  .authori-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .authori-table tr td:first-child {
+    display: flex;
+    align-items: center;
+  }
+  
+ /* .profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  img {
+    vertical-align: middle;
+  }
+  */
+  .actions {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #b8b5d6;
+    color: black;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 200px; 
+    padding: 0; 
+  }
+  
+  .dropdown-menu button {
+    display: block;
+    width: 100%; 
+    padding: 10px;
+    border: none;
+    background-color: #8b8a8a;
+    text-align: left;
+    cursor: pointer;
+    color: #e9e4e4;
+    border-bottom: 1px solid #ddd; 
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #eee6e6;
+  }
+  
+  .dropdown-menu button:last-child {
+    border-bottom: none; 
+  }

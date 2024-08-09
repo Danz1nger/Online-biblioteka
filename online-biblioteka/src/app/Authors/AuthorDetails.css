@@ -1,0 +1,44 @@
+
+.author-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .author-details-content {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .author-details-content h1 {
+    margin-bottom: 20px;
+  }
+  
+  .author-details-content p {
+    margin: 10px 0;
+  }
+  
+  .author-details-content img {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .loading-message {
+    font-size: 20px;
+  }
+  
+  .not-found-message {
+    font-size: 20px;
+    color: #999;
+  }
+  
