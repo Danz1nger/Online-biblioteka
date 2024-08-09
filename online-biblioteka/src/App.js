@@ -1,15 +1,3 @@
-import React, { Suspense, lazy } from "react";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import Header from "./app/header/Header";
-import Sidebar from "./app/sidebar/Sidebar";
-import Spinner from "../src/app/components/Spinner"; // For authenticated fallback
-import ImageFallback from "../src/app//components/ImageFallback"; // Import the ImageFallback component
-import Bibliotekari from "./app/CRUDBibliotekari/Bibliotekari";
-import AddBibliotekar from "./app/CRUDBibliotekari/AddBibliotekar";
-import BibliotekarDetalji from "./app/CRUDBibliotekari/BibliotekarDetalji";
-import BibliotekarEdit from "./app/CRUDBibliotekari/BibliotekarEdit";
-import "./App.css";
-
 // Lazy loading components
 const Settings = lazy(() => import("./app/components/Settings"));
 const Me = lazy(() => import("./app/me/Me"));
@@ -42,7 +30,6 @@ const App = () => {
   const showHeader = isAuthenticated || !isAuthRoute;
 
   return (
-    <div className={`App ${showHeader ? "" : "no-header"}`}>
       {showHeader && <Header />}
       {isAuthenticated ? (
         <div
