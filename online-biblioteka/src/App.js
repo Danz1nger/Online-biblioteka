@@ -24,6 +24,12 @@ const BookIzdavanje = lazy(() => import('./app/books/BookIzdavanje')); // Import
 const Ucenici = lazy(() => import('./app/ucenici/Ucenici'));
 const NoviUcenik = lazy(() => import('./app/ucenici/NoviUcenik'));
 const Ucenik = lazy(() => import('./app/ucenici/Ucenik'));
+const EvidencijaIzdavanja = lazy(() => import('./app/components/EvidencijaIzdavanja'));
+const EvidencijaRezervacija = lazy(() => import('./app/components/EvidencijaRezervacija'));
+const Bibliotekari = lazy(() => import('./app/bibliotekari/Bibliotekari'));
+const AddBibliotekar = lazy(() => import('./app/bibliotekari/AddBibliotekar'));
+const BibliotekarDetalji = lazy(() => import('./app/bibliotekari/BibliotekarDetalji'));
+const BibliotekarEdit = lazy(() => import('./app/bibliotekari/BibliotekarEdit'));
 
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('jwt');
@@ -59,6 +65,19 @@ const App = () => {
                 <Route path="/ucenici/noviucenik" element={<NoviUcenik />} />
                 <Route path="/ucenici/ucenik/:id" element={<Ucenik />} />
                 <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/me/izdavanje" element={<EvidencijaIzdavanja />} />
+                <Route path="/me/rezervacija" element={<EvidencijaRezervacija />} />
+                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/bibliotekari" element={<Bibliotekari />} />
+                <Route path="/bibliotekari/add" element={<AddBibliotekar />} />
+                <Route
+                  path="/bibliotekari/bibliotekar/:id"
+                  element={<BibliotekarDetalji />}
+                />
+                <Route
+                  path="/bibliotekari/bibliotekar/:id/edit"
+                  element={<BibliotekarEdit />}
+                />
               </Routes>
             </Suspense>
           </div>
