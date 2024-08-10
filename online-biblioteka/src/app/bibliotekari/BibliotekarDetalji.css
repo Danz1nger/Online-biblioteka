@@ -1,0 +1,39 @@
+.bibliotekar-detalji-container {
+    display: flex;
+  }
+  
+  .bibliotekar-detalji-content {
+    flex: 1;
+    padding: 20px;
+
+  }
+  
+  .bibliotekar-info {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .bibliotekar-info img {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    margin-left: 50px;
+
+  }
+  
+  .bibliotekar-info p {
+    margin: 10px 0;
+  }
+
+  button{
+    margin-top: 20px;
+    margin-left: 40px;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #007bff;
+    color: aliceblue;
+  
+  }
+  
