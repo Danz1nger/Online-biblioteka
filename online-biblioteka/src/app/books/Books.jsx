@@ -123,6 +123,11 @@ const Books = () => {
           setError('There was an error deleting the book.');
         }
       }
+    } else if (action === 'reserve' && selectedBook) {
+      navigate(`/books/book/reservations/${selectedBook.id}`);
+    } else if (action === 'izdaj' && selectedBook) {
+      // Navigate to the BookIzdavanje page
+      navigate(`/books/book/izdavanja/${selectedBook.id}`);
     }
     setSelectedBook(null);
   };
@@ -257,9 +262,8 @@ const Books = () => {
                     <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
                     <MenuItem onClick={() => handleMenuClose('edit')}>Izmijeni</MenuItem>
                     <MenuItem onClick={() => handleMenuClose('delete')}>Obriši</MenuItem> {/* Delete option */}
-                    <MenuItem onClick={handleMenuClose}>Vrati</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Rezerviši</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Izdaj</MenuItem>
+                    <MenuItem onClick={() => handleMenuClose('reserve')}>Rezerviši</MenuItem> {/* Rezerviši option */}
+                    <MenuItem onClick={() => handleMenuClose('izdaj')}>Izdaj</MenuItem> {/* Izdaj option */}
                   </Menu>
                 </TableCell>
               </TableRow>
