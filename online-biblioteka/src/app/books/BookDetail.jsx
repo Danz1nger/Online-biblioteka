@@ -162,7 +162,7 @@ const BookDetail = () => {
         <div style={{
           position: 'fixed',
           bottom: '150px', // Increased from '92px' to '150px' to move it higher
-          right: '20px',
+          left: '150px',
           width: '300px',
           padding: '20px',
           borderRadius: '8px',
