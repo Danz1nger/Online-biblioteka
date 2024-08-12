@@ -1,0 +1,57 @@
+.header {
+  background-color: #2196F3;
+  color: white;
+  padding: 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: top 0.3s ease; /* Smooth transition */
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-section-header {
+  display: flex;
+  align-items: center;
+}
+
+.user-info-header {
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.notification-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-right: 30px; /* Adds space between the notification icon and user avatar */
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-top: 60px; /* Padding to accommodate the header */
+}
+
+.main-container-app {
+  display: flex;
+  flex: 1;
+  margin-left: 80px; /* Adjust according to sidebar width */
+}
+
+.main-container-app.expanded {
+  margin-left: 220px; /* Adjust according to expanded sidebar width */
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* Enable scrolling */
+  height: calc(100vh - 60px); /* Subtract header height */
+}

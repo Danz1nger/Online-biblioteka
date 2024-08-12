@@ -1,0 +1,125 @@
+/* Bibliotekari.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.bibliotekari-container {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 80px; /* Default margin when sidebar is collapsed */
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f9;
+  transition: margin-left 0.3s;
+}
+
+.main-content.expanded {
+  margin-left: 220px; /* Adjust according to sidebar's expanded width */
+}
+
+.bibliotekari-content {
+  padding: 20px;
+  margin-top: -10px;
+  margin-left: 5px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.new-bibliotekar-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+.new-bibliotekar-btn svg {
+  margin-right: 8px;
+}
+
+.bibliotekari-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bibliotekari-table th,
+.bibliotekari-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.bibliotekari-table th {
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.bibliotekari-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.bibliotekari-table tr td:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.actions {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #b8b5d6;
+  color: black;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 200px; 
+  padding: 0; 
+}
+
+.dropdown-menu button {
+  display: block;
+  width: 100%; 
+  padding: 10px;
+  border: none;
+  background-color: #8b8a8a;
+  text-align: left;
+  cursor: pointer;
+  color: #e9e4e4;
+  border-bottom: 1px solid #ddd; 
+}
+
+.dropdown-menu button:hover {
+  background-color: #eee6e6;
+}
+
+.dropdown-menu button:last-child {
+  border-bottom: none; 
+}
