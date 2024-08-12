@@ -12,9 +12,15 @@ body {
 
 .main-content {
   flex-grow: 1;
+  margin-left: 80px; /* Default margin when sidebar is collapsed */
   display: flex;
   flex-direction: column;
   background-color: #f4f4f9;
+  transition: margin-left 0.3s;
+}
+
+.main-content.expanded {
+  margin-left: 220px; /* Adjust according to sidebar's expanded width */
 }
 
 .bibliotekari-content {
@@ -84,7 +90,6 @@ img {
   position: relative;
   cursor: pointer;
 }
-
 
 .dropdown-menu {
   position: absolute;

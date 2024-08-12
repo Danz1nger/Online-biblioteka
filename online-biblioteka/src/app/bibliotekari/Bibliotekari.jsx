@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../sidebar/Sidebar";
-import Header from "../header/Header";
 import { Menu, MenuItem, CircularProgress } from "@mui/material";
 
 const Bibliotekari = () => {
@@ -103,58 +101,54 @@ const Bibliotekari = () => {
   }
 
   return (
-    <div>
-      <Sidebar />
-      <Header />
-      <div className="bibliotekari-content">
-        <button className="new-bibliotekar-btn" onClick={newBibliotekar}>
-          <FontAwesomeIcon icon={faPlus} /> NOVI BIBLIOTEKAR
-        </button>
-        <table className="bibliotekari-table">
-          <thead>
-            <tr>
-              <th>Ime i prezime</th>
-              <th>Email</th>
-              <th>Tip korisnika</th>
-              <th></th>
+    <div className="bibliotekari-content">
+      <button className="new-bibliotekar-btn" onClick={newBibliotekar}>
+        <FontAwesomeIcon icon={faPlus} /> NOVI BIBLIOTEKAR
+      </button>
+      <table className="bibliotekari-table">
+        <thead>
+          <tr>
+            <th>Ime i prezime</th>
+            <th>Email</th>
+            <th>Tip korisnika</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {bibliotekari.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <input type="checkbox" />
+                <img src={user.photoPath} alt="img" className="profile-pic" />
+                {user.name} {user.surname}
+              </td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+              <td className="actions">
+                <FontAwesomeIcon
+                  icon={faEllipsisV}
+                  onClick={(event) => handleMenuOpen(event, user.id)}
+                />
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl) && selectedBibliotekar === user.id}
+                  onClose={() => setAnchorEl(null)}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 48 * 4.5,
+                      width: '20ch',
+                    },
+                  }}
+                >
+                  <MenuItem onClick={() => handleMenuClose("Pregled")}>Pregled korisnika</MenuItem>
+                  <MenuItem onClick={() => handleMenuClose("Update")}>Update korisnika</MenuItem>
+                  <MenuItem onClick={() => handleMenuClose("Brisanje")}>Brisanje korisnika</MenuItem>
+                </Menu>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {bibliotekari.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <input type="checkbox" />
-                  <img src={user.photoPath} alt="img" className="profile-pic" />
-                  {user.name} {user.surname}
-                </td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td className="actions">
-                  <FontAwesomeIcon
-                    icon={faEllipsisV}
-                    onClick={(event) => handleMenuOpen(event, user.id)}
-                  />
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl) && selectedBibliotekar === user.id}
-                    onClose={() => setAnchorEl(null)}
-                    PaperProps={{
-                      style: {
-                        maxHeight: 48 * 4.5,
-                        width: '20ch',
-                      },
-                    }}
-                  >
-                    <MenuItem onClick={() => handleMenuClose("Pregled")}>Pregled korisnika</MenuItem>
-                    <MenuItem onClick={() => handleMenuClose("Update")}>Update korisnika</MenuItem>
-                    <MenuItem onClick={() => handleMenuClose("Brisanje")}>Brisanje korisnika</MenuItem>
-                  </Menu>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
