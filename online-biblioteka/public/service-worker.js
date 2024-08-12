@@ -18,6 +18,8 @@ const ASSETS_TO_CACHE = [
   '/src/app/me/Me.css',
   '/src/app/sidebar/Sidebar.css',
   '/src/index.css',
+  '/src/app/components/Footer.css',
+
 
   // JavaScript Files
   '/static/js/main.js',
@@ -51,7 +53,8 @@ const ASSETS_TO_CACHE = [
   '/src/index.js',
   '/src/reportWebVitals.js',
   '/src/setupTests.js',
-
+  '/src/app/components/Footer.jsx',
+  
   // Images
   '/public/ava.png',
   '/public/background.jpg',
