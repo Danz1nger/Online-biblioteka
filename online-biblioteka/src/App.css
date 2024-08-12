@@ -1,0 +1,25 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-top: 60px; /* Default padding for header */
+}
+
+.App.no-header {
+  padding-top: 0; /* Remove padding when there is no header */
+}
+
+.main-container-app {
+  display: flex;
+  flex: 1;
+  margin-left: 80px; /* Adjust according to the sidebar width */
+}
+
+.main-container-app.expanded {
+  margin-left: 220px; /* Adjust according to the expanded sidebar width */
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
