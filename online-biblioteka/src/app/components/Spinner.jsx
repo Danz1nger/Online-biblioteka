@@ -17,6 +17,12 @@ const Spinner = () => {
     animation: 'spin 1s linear infinite',
   };
 
+  const outerContainerStyle = {
+    height: '1000px',
+    width: '100%',
+    position: 'relative',  // This ensures the spinner is positioned relative to this container
+  };
+
   const keyframesStyle = `
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -25,9 +31,11 @@ const Spinner = () => {
   `;
 
   return (
-    <div style={spinnerContainerStyle}>
+    <div style={outerContainerStyle}>
       <style>{keyframesStyle}</style>
-      <div style={spinnerStyle}></div>
+      <div style={spinnerContainerStyle}>
+        <div style={spinnerStyle}></div>
+      </div>
     </div>
   );
 };
