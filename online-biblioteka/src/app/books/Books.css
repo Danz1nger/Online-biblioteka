@@ -145,13 +145,18 @@ input[type="checkbox"] {
   100% { transform: rotate(360deg); }
 }
 
+
 .title-cell {
   display: flex;
   align-items: center;
+  padding: 0; /* Remove any unnecessary padding */
 }
 
 .title-cell img {
-  margin-right: 10px;
+  margin-right: 5px; /* Adjust margin to reduce spacing */
+  width: 20px; /* Ensure a consistent size for the image/icon */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure the image fits within the allocated space */
 }
 
 .bulk-delete-icon {
