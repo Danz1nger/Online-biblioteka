@@ -1,0 +1,83 @@
+.librarians-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  min-height: 400px;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.search-container {
+  position: relative;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Ovo će pomeriti search container na desnu stranu */
+  margin-right: 0px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.search-icon {
+  margin-left: 10px;
+  font-size: 18px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.new-librarian-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.new-librarian-btn:hover {
+  background-color: #0056b3;
+}
+
+.table-container {
+  margin-top: 15px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
