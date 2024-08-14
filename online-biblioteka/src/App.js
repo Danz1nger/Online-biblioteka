@@ -44,11 +44,14 @@ const App = () => {
     setIsHeaderHidden(hidden);
   };
 
+  // Determine if the current route is an auth route
   const isAuthRoute = ['/login', '/register', '/forgotpassword'].includes(location.pathname);
-  const showHeader = isAuthenticated || !isAuthRoute;
+
+  // Show the header only if the user is authenticated and not on an auth route
+  const showHeader = isAuthenticated && !isAuthRoute;
 
   return (
-    <div className={`App ${isHeaderHidden ? 'no-header' : ''}`}>
+    <div className={`App ${isHeaderHidden || !showHeader ? 'no-header' : ''}`}>
       <ScrollToTop />
       {showHeader && (
         <Header onHeaderVisibilityChange={handleHeaderVisibilityChange} />
