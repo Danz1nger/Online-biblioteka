@@ -8,6 +8,7 @@ import './App.css';
 import Authors from './app/Authors/Authors';
 import NewAuthor from './app/Authors/NewAuthor';
 import AuthorDetails from './app/Authors/AuthorDetails';
+import AuthorEdit from './app/Authors/AuthorEdit'
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -56,6 +57,8 @@ const App = () => {
                 <Route path="/authors" element={<Authors />} />
                 <Route path= "/authors/add" element={<NewAuthor/>}/>
                 <Route path="/authors/author/:id" element={<AuthorDetails />} />
+                <Route path="/authors/author/:id/edit" element={<AuthorEdit />} />
+
 
               </Routes>
             </Suspense>
