@@ -63,10 +63,8 @@ const App = () => {
                 <Route path="/ucenici" element={<Ucenici />} />
                 <Route path="/ucenici/noviucenik" element={<NoviUcenik />} />
                 <Route path="/ucenici/ucenik/:id" element={<Ucenik />} />
-                <Route path="*" element={<Navigate to="/" />} />
                 <Route path="/me/izdavanje" element={<EvidencijaIzdavanja />} />
                 <Route path="/me/rezervacija" element={<EvidencijaRezervacija />} />
-                <Route path="*" element={<Navigate to="/" />} />
                 <Route path="/bibliotekari" element={<Bibliotekari />} />
                 <Route path="/bibliotekari/add" element={<AddBibliotekar />} />
                 <Route
@@ -77,6 +75,7 @@ const App = () => {
                   path="/bibliotekari/bibliotekar/:id/edit"
                   element={<BibliotekarEdit />}
                 />
+                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
             <Footer /> {/* Add the Footer component here */}
