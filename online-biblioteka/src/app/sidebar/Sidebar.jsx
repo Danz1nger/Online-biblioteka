@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
-const Sidebar = ({ onToggle }) => {
+const Sidebar = ({ onToggle, isHeaderHidden }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = (e) => {
@@ -27,7 +27,7 @@ const Sidebar = ({ onToggle }) => {
   };
 
   return (
-    <aside className={`sidebar ${isExpanded ? 'expanded' : ''}`}>
+    <aside className={`sidebar ${isExpanded ? 'expanded' : ''} ${isHeaderHidden ? 'no-header' : ''}`}>
       <div className="hamburger" onClick={toggleSidebar}>
         <FontAwesomeIcon icon={faBars} />
       </div>

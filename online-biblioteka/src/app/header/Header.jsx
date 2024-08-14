@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './Header.css';
 import axios from 'axios';
 
-const Header = () => {
+const Header = ({ onHeaderVisibilityChange }) => {
     const [userData, setUserData] = useState(null);
     const [hidden, setHidden] = useState(false);
 
@@ -11,14 +11,16 @@ const Header = () => {
         const handleScroll = () => {
             if (window.scrollY === 0) {
                 setHidden(false);  // Show header when at the top of the page
+                onHeaderVisibilityChange(false); // Notify parent
             } else if (window.scrollY > 10) {
-                setHidden(true);   // Hide header when scrolling down past 50px
+                setHidden(true);   // Hide header when scrolling down past 10px
+                onHeaderVisibilityChange(true); // Notify parent
             }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [onHeaderVisibilityChange]);
 
     useEffect(() => {
         const fetchUserData = async () => {

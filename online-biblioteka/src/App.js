@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useState } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
-import Footer from './app/components/Footer'; // Import the Footer component
+import Footer from './app/components/Footer';
 import Spinner from '../src/app/components/Spinner';
 import ImageFallback from '../src/app/components/ImageFallback';
 import ScrollToTop from './app/components/ScrollToTop';
@@ -19,7 +19,7 @@ const BookDetail = lazy(() => import('./app/books/BookDetail'));
 const EditBook = lazy(() => import('./app/books/EditBook'));
 const NewBook = lazy(() => import('./app/books/NewBook'));
 const BookReservations = lazy(() => import('./app/books/BookReservations'));
-const BookIzdavanje = lazy(() => import('./app/books/BookIzdavanje')); // Import the new BookIzdavanje component
+const BookIzdavanje = lazy(() => import('./app/books/BookIzdavanje'));
 const Ucenici = lazy(() => import('./app/ucenici/Ucenici'));
 const NoviUcenik = lazy(() => import('./app/ucenici/NoviUcenik'));
 const Ucenik = lazy(() => import('./app/ucenici/Ucenik'));
@@ -34,21 +34,32 @@ const App = () => {
   const isAuthenticated = !!localStorage.getItem('jwt');
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const location = useLocation();
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   const handleSidebarToggle = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
+  };
+
+  const handleHeaderVisibilityChange = (hidden) => {
+    setIsHeaderHidden(hidden);
   };
 
   const isAuthRoute = ['/login', '/register', '/forgotpassword'].includes(location.pathname);
   const showHeader = isAuthenticated || !isAuthRoute;
 
   return (
-    <div className={`App ${showHeader ? '' : 'no-header'}`}>
+    <div className={`App ${isHeaderHidden ? 'no-header' : ''}`}>
       <ScrollToTop />
-      {showHeader && <Header />}
+      {showHeader && (
+        <Header onHeaderVisibilityChange={handleHeaderVisibilityChange} />
+      )}
       {isAuthenticated ? (
         <div className={`main-container-app ${isSidebarExpanded ? 'expanded' : ''}`}>
-          <Sidebar onToggle={handleSidebarToggle} isExpanded={isSidebarExpanded} />
+          <Sidebar
+            onToggle={handleSidebarToggle}
+            isExpanded={isSidebarExpanded}
+            isHeaderHidden={isHeaderHidden}
+          />
           <div className="content">
             <Suspense fallback={<Spinner />}>
               <Routes>
@@ -59,7 +70,7 @@ const App = () => {
                 <Route path="/books/book/:id/edit" element={<EditBook />} />
                 <Route path="/books/newbook" element={<NewBook />} />
                 <Route path="/books/book/reservations/:id" element={<BookReservations />} />
-                <Route path="/books/book/izdavanja/:id" element={<BookIzdavanje />} /> {/* New route */}
+                <Route path="/books/book/izdavanja/:id" element={<BookIzdavanje />} />
                 <Route path="/ucenici" element={<Ucenici />} />
                 <Route path="/ucenici/noviucenik" element={<NoviUcenik />} />
                 <Route path="/ucenici/ucenik/:id" element={<Ucenik />} />
@@ -67,18 +78,12 @@ const App = () => {
                 <Route path="/me/rezervacija" element={<EvidencijaRezervacija />} />
                 <Route path="/bibliotekari" element={<Bibliotekari />} />
                 <Route path="/bibliotekari/add" element={<AddBibliotekar />} />
-                <Route
-                  path="/bibliotekari/bibliotekar/:id"
-                  element={<BibliotekarDetalji />}
-                />
-                <Route
-                  path="/bibliotekari/bibliotekar/:id/edit"
-                  element={<BibliotekarEdit />}
-                />
+                <Route path="/bibliotekari/bibliotekar/:id" element={<BibliotekarDetalji />} />
+                <Route path="/bibliotekari/bibliotekar/:id/edit" element={<BibliotekarEdit />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
-            <Footer /> {/* Add the Footer component here */}
+            <Footer />
           </div>
         </div>
       ) : (

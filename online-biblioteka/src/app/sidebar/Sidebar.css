@@ -1,6 +1,6 @@
 .sidebar {
   width: 80px;
-  transition: width 0.3s;
+  transition: width 0.3s, padding-top 0.3s;
   background-color: #EAEAEA;
   height: 100vh; /* Make sure it fills the entire height of the viewport */
   overflow: hidden;
@@ -13,6 +13,10 @@
 
 .sidebar.expanded {
   width: 220px;
+}
+
+.sidebar.no-header {
+  padding-top: 0; /* Remove top padding when the header is hidden */
 }
 
 .hamburger {
