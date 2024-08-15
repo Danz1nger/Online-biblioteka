@@ -45,7 +45,7 @@ input {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #0056b3;
   color: white;
   padding: 0.5rem;
   border: none;
@@ -55,7 +55,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #003d82;
 }
 
 .loginLink {

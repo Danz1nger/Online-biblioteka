@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useCallback, useMemo } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
@@ -30,35 +30,45 @@ const AddBibliotekar = lazy(() => import('./app/bibliotekari/AddBibliotekar'));
 const BibliotekarDetalji = lazy(() => import('./app/bibliotekari/BibliotekarDetalji'));
 const BibliotekarEdit = lazy(() => import('./app/bibliotekari/BibliotekarEdit'));
 
+// 1. Memoize child components
+const MemoizedHeader = React.memo(Header);
+const MemoizedSidebar = React.memo(Sidebar);
+const MemoizedFooter = React.memo(Footer);
+
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('jwt');
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const location = useLocation();
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
-  const handleSidebarToggle = () => {
-    setIsSidebarExpanded(!isSidebarExpanded);
-  };
+  // 2. Memoize callback functions
+  const handleSidebarToggle = useCallback(() => {
+    setIsSidebarExpanded((prev) => !prev);
+  }, []);
 
-  const handleHeaderVisibilityChange = (hidden) => {
+  const handleHeaderVisibilityChange = useCallback((hidden) => {
     setIsHeaderHidden(hidden);
-  };
+  }, []);
 
-  // Determine if the current route is an auth route
-  const isAuthRoute = ['/login', '/register', '/forgotpassword'].includes(location.pathname);
+  // 3. Memoize derived values
+  const isAuthRoute = useMemo(() => {
+    return ['/login', '/register', '/forgotpassword'].includes(location.pathname);
+  }, [location.pathname]);
 
-  // Show the header only if the user is authenticated and not on an auth route
-  const showHeader = isAuthenticated && !isAuthRoute;
+  const showHeader = useMemo(() => {
+    return isAuthenticated && !isAuthRoute;
+  }, [isAuthenticated, isAuthRoute]);
 
   return (
     <div className={`App ${isHeaderHidden || !showHeader ? 'no-header' : ''}`}>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <ScrollToTop />
       {showHeader && (
-        <Header onHeaderVisibilityChange={handleHeaderVisibilityChange} />
+        <MemoizedHeader onHeaderVisibilityChange={handleHeaderVisibilityChange} />
       )}
       {isAuthenticated ? (
         <div className={`main-container-app ${isSidebarExpanded ? 'expanded' : ''}`}>
-          <Sidebar
+          <MemoizedSidebar
             onToggle={handleSidebarToggle}
             isExpanded={isSidebarExpanded}
             isHeaderHidden={isHeaderHidden}
@@ -86,7 +96,7 @@ const App = () => {
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
-            <Footer />
+            <MemoizedFooter />
           </div>
         </div>
       ) : (
@@ -103,4 +113,5 @@ const App = () => {
   );
 };
 
+// 4. Memoize the entire App component
 export default React.memo(App);

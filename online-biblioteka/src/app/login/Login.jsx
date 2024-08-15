@@ -58,6 +58,7 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            aria-label="Username"
           />
           <input
             type="password"
@@ -67,6 +68,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-label="Password"
           />
           <input
             type="text"
@@ -76,6 +78,7 @@ const Login = () => {
             value={device}
             onChange={(e) => setDevice(e.target.value)}
             required
+            aria-label="Device"
           />
           <button type="submit">Log In</button>
         </form>

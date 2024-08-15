@@ -106,6 +106,7 @@ const Register = () => {
             onChange={handleChange}
             required
             autoComplete="new-password"
+            aria-label="Password"
           />
           <input
             type="password"
@@ -115,6 +116,7 @@ const Register = () => {
             onChange={handleChange}
             required
             autoComplete="new-password"
+            aria-label="Confirm Password"
           />
           <input
             type="text"
@@ -124,6 +126,7 @@ const Register = () => {
             onChange={handleChange}
             required
             autoComplete="device-name"
+            aria-label="Device"
           />
           <button type="submit">Register</button>
         </form>
