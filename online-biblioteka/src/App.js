@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useState, useCallback, useMemo } from 'react';
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import React, { Suspense, lazy, useState, useCallback, useMemo, useEffect } from 'react';
+import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Header from './app/header/Header';
 import Sidebar from './app/sidebar/Sidebar';
 import Footer from './app/components/Footer';
@@ -7,6 +7,7 @@ import Spinner from '../src/app/components/Spinner';
 import ImageFallback from '../src/app/components/ImageFallback';
 import ScrollToTop from './app/components/ScrollToTop';
 import './App.css';
+import axios from 'axios';
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -40,6 +41,7 @@ const App = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const location = useLocation();
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+  const navigate = useNavigate();
 
   // 2. Memoize callback functions
   const handleSidebarToggle = useCallback(() => {
@@ -58,6 +60,26 @@ const App = () => {
   const showHeader = useMemo(() => {
     return isAuthenticated && !isAuthRoute;
   }, [isAuthenticated, isAuthRoute]);
+
+  useEffect(() => {
+    // Add a response interceptor
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized, redirect to login
+          localStorage.removeItem('jwt'); // Clear the invalid token
+          navigate('/login');
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    // Clean up the interceptor when the component unmounts
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, [navigate]);
 
   return (
     <div className={`App ${isHeaderHidden || !showHeader ? 'no-header' : ''}`}>
