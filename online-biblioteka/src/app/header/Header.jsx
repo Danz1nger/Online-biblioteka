@@ -17,6 +17,7 @@ const Header = ({ onHeaderVisibilityChange }) => {
             } else if (window.scrollY > 10) {
                 setHidden(true);   // Hide header when scrolling down past 10px
                 onHeaderVisibilityChange(true); // Notify parent
+                setShowNotifications(false);  // Close notifications dropdown when header is hidden
             }
         };
 
