@@ -6,6 +6,8 @@ import axios from 'axios';
 const Header = ({ onHeaderVisibilityChange }) => {
     const [userData, setUserData] = useState(null);
     const [hidden, setHidden] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -42,6 +44,37 @@ const Header = ({ onHeaderVisibilityChange }) => {
         fetchUserData();
     }, []);
 
+    useEffect(() => {
+        const checkNotifications = () => {
+            const newNotifications = [];
+            if (localStorage.getItem('newStudents') === 'true') {
+                newNotifications.push('There are new students!');
+            }
+            if (localStorage.getItem('newBooks') === 'true') {
+                newNotifications.push('There are new books!');
+            }
+            setNotifications(newNotifications);
+        };
+
+        checkNotifications();
+        
+        // Set up an interval to check for notifications every 5 seconds
+        const intervalId = setInterval(checkNotifications, 5000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
+    }, []);
+
+    const toggleNotifications = () => {
+        setShowNotifications(!showNotifications);
+    };
+
+    const clearNotifications = () => {
+        setNotifications([]);
+        localStorage.removeItem('newStudents');
+        localStorage.removeItem('newBooks');
+    };
+
     return (
         <header className="header" style={{ top: hidden ? '-60px' : '0px' }}>
             <div className="logo">
@@ -52,9 +85,28 @@ const Header = ({ onHeaderVisibilityChange }) => {
             </div>
             <div className="user-section-header">
                 <div className="user-info-header">
-                    <svg className="notification-icon" viewBox="0 0 24 24" fill="white">
-                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"></path>
-                    </svg>
+                    <div className="notification-container" style={{ marginRight: '15px' }}>
+                        <svg className="notification-icon" viewBox="0 0 24 24" fill="white" onClick={toggleNotifications}>
+                            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"></path>
+                        </svg>
+                        {showNotifications && !hidden && (
+                            <div className="notification-dropdown">
+                                <div className="notification-header">
+                                    <span style={{ color: 'black' }}>Notifications</span>
+                                    <button onClick={clearNotifications} className="clear-notifications">X</button>
+                                </div>
+                                {notifications.length > 0 ? (
+                                    notifications.map((notification, index) => (
+                                        <div key={index} className="notification-item" style={{ color: notification.includes('new') ? 'blue' : 'black' }}>
+                                            {notification}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="notification-item" style={{ color: 'black' }}>No new notifications</div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                     {userData && (
                         <NavLink to="/me">
                             <img 
