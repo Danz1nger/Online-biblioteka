@@ -42,6 +42,14 @@ const Books = () => {
           return book;
         });
         setBooks(booksData);
+
+        // Compare with stored data and update local storage
+        const storedBooks = JSON.parse(localStorage.getItem('books') || '[]');
+        if (JSON.stringify(booksData) !== JSON.stringify(storedBooks)) {
+          localStorage.setItem('books', JSON.stringify(booksData));
+          localStorage.setItem('newBooks', 'true');
+        }
+
       } catch (err) {
         setError(err.message);
       } finally {
