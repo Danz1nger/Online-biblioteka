@@ -37,6 +37,14 @@ const Ucenici = () => {
         });
         const filteredStudents = response.data.data.filter(user => user.role === "Učenik");
         setStudents(filteredStudents);
+        
+        // Compare with stored data and update local storage
+        const storedStudents = JSON.parse(localStorage.getItem('students') || '[]');
+        if (JSON.stringify(filteredStudents) !== JSON.stringify(storedStudents)) {
+          localStorage.setItem('students', JSON.stringify(filteredStudents));
+          localStorage.setItem('newStudents', 'true');
+        }
+        
         setLoading(false);
       } catch (err) {
         setError(err.message);
