@@ -22,7 +22,6 @@ const NewBook = () => {
     pictures: [],
   });
 
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleInputChange = useCallback((e) => {
@@ -43,7 +42,7 @@ const NewBook = () => {
       navigate('/books');
     })
     .catch(error => {
-      setError('There was an error creating the book!');
+      // Error handling removed, React Toastify will handle it
     });
   }, [bookData, navigate]);
 
@@ -70,7 +69,6 @@ const NewBook = () => {
           <button className="save-button" onClick={handleSave}>Save</button>
           <button className="cancel-button" onClick={handleCancel}>Cancel</button>
         </div>
-        {error && <div>{error}</div>}
       </div>
     </div>
   );

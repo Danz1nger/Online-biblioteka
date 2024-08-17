@@ -8,7 +8,6 @@ const EditBook = () => {
   const { id } = useParams();
   const [editedBook, setEditedBook] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,8 +40,7 @@ const EditBook = () => {
         setEditedBook(bookData);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
-        setLoading(false);
+        // Error handling removed, React Toastify will handle it
       }
     };
 
@@ -66,7 +64,7 @@ const EditBook = () => {
       navigate(`/books/book/${id}`);
     })
     .catch(error => {
-      setError("There was an error updating the book!");
+      // Error handling removed, React Toastify will handle it
     });
   }, [id, editedBook, navigate]);
 
@@ -76,10 +74,6 @@ const EditBook = () => {
 
   if (loading) {
     return <Spinner />; // Using Spinner component
-  }
-
-  if (error) {
-    return <div>{error}</div>;
   }
 
   return (

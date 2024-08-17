@@ -164,7 +164,7 @@ const Books = () => {
         setBooks(books.filter(book => !selectedBooks.includes(book.id)));
         setSelectedBooks([]);
       } catch (err) {
-        setError('There was an error deleting the selected books.');
+        // Error handling removed, React Toastify will handle it
       }
     }
   };

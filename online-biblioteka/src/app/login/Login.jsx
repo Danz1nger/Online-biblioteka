@@ -32,11 +32,9 @@ const Login = () => {
         localStorage.setItem('jwt', data.data.token);
         setResponseMessage({ type: 'success', message: data.message });
         navigate('/');
-      } else {
-        setResponseMessage({ type: 'error', message: data.message || 'Login failed' });
       }
     } catch (error) {
-      setResponseMessage({ type: 'error', message: error.response?.data?.message || 'An error occurred. Please try again.' });
+      // Error handling removed, React Toastify will handle it
     }
   };
 

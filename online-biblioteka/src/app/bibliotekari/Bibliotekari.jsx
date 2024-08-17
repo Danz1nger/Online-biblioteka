@@ -62,8 +62,8 @@ const Bibliotekari = () => {
 
   const handleDeleteBibliotekar = async (userId) => {
     const token = localStorage.getItem("jwt");
-    setLoading(true); // na true dok se brisanje ne izvrsi
-  
+    setLoading(true);
+
     try {
       await axios.delete(`https://biblioteka.simonovicp.com/api/users/${userId}`, {
         headers: {
@@ -73,15 +73,13 @@ const Bibliotekari = () => {
         }
       });
 
-  
       setBibliotekari(bibliotekari.filter((bibliotekar) => bibliotekar.id !== userId));
-      console.log(`Bibliotekar sa ID-jem ${userId} je uspešno obrisan.`); //poruka sa uspjesno obrisanim korisnikom iz baze podataka
-
+      console.log(`Bibliotekar sa ID-jem ${userId} je uspešno obrisan.`);
       
       handleMenuClose();
     } catch (err) {
       console.error("Error deleting librarian:", err);
-      setError('Failed to delete librarian. Please try again.');
+      // Error handling removed, React Toastify will handle it
     } finally {
       setLoading(false);
     }
