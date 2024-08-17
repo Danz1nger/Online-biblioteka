@@ -8,6 +8,8 @@ import ImageFallback from '../src/app/components/ImageFallback';
 import ScrollToTop from './app/components/ScrollToTop';
 import './App.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -42,6 +44,7 @@ const App = () => {
   const location = useLocation();
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   const navigate = useNavigate();
+  const [globalError, setGlobalError] = useState(null);
 
   // 2. Memoize callback functions
   const handleSidebarToggle = useCallback(() => {
@@ -62,14 +65,32 @@ const App = () => {
   }, [isAuthenticated, isAuthRoute]);
 
   useEffect(() => {
+    if (globalError) {
+      toast.error(globalError);
+      setGlobalError(null);
+    }
+  }, [globalError]);
+
+  useEffect(() => {
     // Add a response interceptor
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.status === 401) {
-          // Unauthorized, redirect to login
-          localStorage.removeItem('jwt'); // Clear the invalid token
-          navigate('/login');
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          setGlobalError(error.response.data.message || 'An error occurred');
+          if (error.response.status === 401) {
+            // Unauthorized, redirect to login
+            localStorage.removeItem('jwt'); // Clear the invalid token
+            navigate('/login');
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          setGlobalError('No response received from server');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          setGlobalError('Error setting up the request');
         }
         return Promise.reject(error);
       }
@@ -131,6 +152,7 @@ const App = () => {
           </Routes>
         </Suspense>
       )}
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 };
