@@ -43,3 +43,11 @@
 .skip-link:focus {
   top: 0;
 }
+
+.Toastify__toast-container--top-right {
+  margin-right: 80px; /* Adjust based on your sidebar width */
+}
+
+.main-container-app.expanded .Toastify__toast-container--top-right {
+  margin-right: 220px; /* Adjust based on your expanded sidebar width */
+}

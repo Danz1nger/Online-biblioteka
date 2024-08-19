@@ -79,7 +79,12 @@ const App = () => {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          setGlobalError(error.response.data.message || 'An error occurred');
+          if (error.response.status === 403) {
+            // Handle 403 Forbidden specifically
+            setGlobalError(error.response.data.error || "Not authorized.");
+          } else {
+            setGlobalError(error.response.data.message || 'An error occurred');
+          }
           if (error.response.status === 401) {
             // Unauthorized, redirect to login
             localStorage.removeItem('jwt'); // Clear the invalid token
@@ -152,7 +157,11 @@ const App = () => {
           </Routes>
         </Suspense>
       )}
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        style={{ top: showHeader ? '60px' : '0' }}
+      />
     </div>
   );
 };
