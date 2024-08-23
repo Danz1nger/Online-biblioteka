@@ -65,7 +65,7 @@ const AuthorEdit = () => {
         }
       });
       console.log('Update response:', response.data);
-      navigate('/autori'); // Preusmeri korisnika na stranicu sa listom autora
+      navigate('/authors'); // Preusmeri korisnika na stranicu sa listom autora
     } catch (err) {
       console.error('Update error:', err.response ? err.response.data : err.message);
       setError(err.response ? err.response.data.message : err.message);
@@ -112,7 +112,14 @@ const AuthorEdit = () => {
           multiline
           rows={4}
         />
-        <Button type="submit" variant="contained" color="primary" onClick={() => navigate('/authors')}>
+        <TextField
+          name="books"
+          label="Books"
+          value={editedAuthor?.books || ''}
+          onChange={handleChange}
+          fullWidth
+        />
+        <Button type="submit" variant="contained" color="primary">
           Save
         </Button>
         <Button variant="outlined" onClick={() => navigate('/authors')}>

@@ -39,7 +39,9 @@ const NewAuthor = () => {
       setErrors(formErrors);
       return;
     }
-
+  
+    console.log('Form Data:', formData); // Dodaj ovo da proveriš sadržaj formData
+  
     try {
       const token = localStorage.getItem('jwt');
       const response = await axios.post('https://biblioteka.simonovicp.com/api/authors/store', formData, {
@@ -48,17 +50,21 @@ const NewAuthor = () => {
           'Authorization': `Bearer ${token}`,
         }
       });
+      console.log('API Response:', response.data); // Dodaj ovo za logovanje odgovora
       if (response.data.success) {
         setSuccessMessage(response.data.message);
         setTimeout(() => {
           navigate('/authors'); // Navigacija ka listi autora
         }, 2000);
+      } else {
+        setApiError(response.data.message || 'Došlo je do greške.');
       }
     } catch (error) {
       setApiError('Došlo je do greške prilikom slanja podataka. Molimo pokušajte ponovo.');
       console.error(error);
     }
   };
+  
 
   const handleReset = () => {
     setFormData({

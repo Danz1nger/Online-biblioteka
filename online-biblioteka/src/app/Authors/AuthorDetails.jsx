@@ -65,6 +65,7 @@ const AuthorDetails = () => {
           <p><strong>Ime:</strong> {author.name}</p>
           <p><strong>Prezime:</strong> {author.surname}</p>
           <p><strong>Opis:</strong> {author.bio || 'Nema opisa'}</p>
+
           <button onClick={handleEditClick}>Uredi</button>
         </div>
 
