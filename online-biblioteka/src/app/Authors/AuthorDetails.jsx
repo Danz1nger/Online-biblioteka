@@ -24,6 +24,9 @@ const AuthorDetails = () => {
           },
         });
         setAuthor(response.data.data);
+        console.log("Full response data:", response.data);
+        console.log("Author details:", response.data.data);
+        
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -69,9 +72,9 @@ const AuthorDetails = () => {
           <button onClick={handleEditClick}>Uredi</button>
         </div>
 
-        <div className="books-section">
+        {/* <div className="books-section">
           <h2>Knjige koje je napisao {author.name} {author.surname}</h2>
-          <div className="books-list">
+          *<div className="books-list">
             {author.books.length === 0 ? (
               <p>Autor nema knjiga.</p>
             ) : (
@@ -91,11 +94,9 @@ const AuthorDetails = () => {
                   </div>
                 </div>
               ))
-            )}
+            )}*/}
           </div>
         </div>
-      </div>
-    </div>
   );
 };
 

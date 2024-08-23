@@ -16,7 +16,6 @@ const StyledForm = styled('form')({
   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
 });
 
-// EditAuthor Component
 const AuthorEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -104,21 +103,15 @@ const AuthorEdit = () => {
           fullWidth
         />
         <TextField
-          name="bio"
+          name="biography"
           label="Biography"
-          value={editedAuthor?.bio || ''}
+          value={editedAuthor?.biography || ''}
           onChange={handleChange}
           fullWidth
           multiline
           rows={4}
         />
-        <TextField
-          name="books"
-          label="Books"
-          value={editedAuthor?.books || ''}
-          onChange={handleChange}
-          fullWidth
-        />
+       
         <Button type="submit" variant="contained" color="primary">
           Save
         </Button>
