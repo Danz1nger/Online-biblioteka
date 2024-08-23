@@ -7,6 +7,7 @@ import {
   IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/system';
 import './Ucenici.css';
 
@@ -67,9 +68,9 @@ const Ucenik = () => {
     setEditMode(location.pathname.endsWith('/edit'));
   }, [fetchStudentData, location]);
 
-  const handleEdit = () => {
-    setEditMode(true);
-  };
+  const handleEdit = useCallback(() => {
+    navigate(`/ucenici/ucenik/${id}/edit`);
+  }, [id, navigate]);
 
   const handleCancel = () => {
     setEditMode(false);
@@ -163,6 +164,18 @@ const Ucenik = () => {
         >
           <DeleteIcon />
         </IconButton>
+        <IconButton 
+          aria-label="edit"
+          onClick={handleEdit}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '50px',
+            color: 'blue'
+          }}
+        >
+          <EditIcon />
+        </IconButton>
         <CardContent>
           <StyledAvatar 
             src={editMode ? editedStudent.photoPath : student.photoPath || 'https://biblioteka.simonovicp.com/img/profile.jpg'} 
@@ -197,9 +210,6 @@ const Ucenik = () => {
                   <ListItemText primary="Last Access" secondary={student.lastAccess || 'N/A'} />
                 </ListItem>
               </List>
-              <Button variant="contained" color="primary" onClick={handleEdit}>
-                Edit
-              </Button>
             </>
           ) : (
             <StyledForm onSubmit={handleSubmit}>

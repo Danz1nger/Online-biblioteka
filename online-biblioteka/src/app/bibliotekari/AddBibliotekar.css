@@ -11,7 +11,21 @@
 }
 
 .input-field-novi {
-  width: calc(400% - 20px); /* Adjust the width of the input fields */
+  width: calc(340.5% - 20px); /* Reduced by 30% from 325% */
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.photo-input-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.photo-input-field {
+  width: calc(49.25% - 20px); /* 70% of the original 227.5% */
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;

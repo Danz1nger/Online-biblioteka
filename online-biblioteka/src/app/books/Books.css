@@ -50,14 +50,14 @@ h1 {
 
 table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
   padding: 12px 15px;
   text-align: left;
+  border: 1px solid #ddd;
 }
 
 th {
@@ -68,7 +68,6 @@ th {
 
 td {
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
 }
 
 tr:hover td {

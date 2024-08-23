@@ -12,6 +12,7 @@ const Bibliotekari = () => {
   const [loading, setLoading] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedBibliotekar, setSelectedBibliotekar] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const navigate = useNavigate();
 
@@ -90,6 +91,10 @@ const Bibliotekari = () => {
     navigate("/bibliotekari/add");
   };
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   if (loading) {
     return <div className="spinner-container"><CircularProgress /></div>;
   }
@@ -100,9 +105,21 @@ const Bibliotekari = () => {
 
   return (
     <div className="bibliotekari-content">
-      <button className="new-bibliotekar-btn" onClick={newBibliotekar}>
-        <FontAwesomeIcon icon={faPlus} /> NOVI BIBLIOTEKAR
-      </button>
+      <h1>Bibliotekari</h1>
+      <div className="actions-container">
+        <button className="new-bibliotekar-btn" onClick={newBibliotekar}>
+          <FontAwesomeIcon icon={faPlus} /> NOVI BIBLIOTEKAR
+        </button>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Pretraži bibliotekare..."
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <span className="search-icon">🔍</span>
+        </div>
+      </div>
       <table className="bibliotekari-table">
         <thead>
           <tr>

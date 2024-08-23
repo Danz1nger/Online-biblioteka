@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
@@ -10,6 +10,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'; // Importing Arrow Up Icon
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'; // Importing Arrow Down Icon
 import './Ucenici.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Ucenici = () => {
   const [students, setStudents] = useState([]);
@@ -168,7 +170,9 @@ const Ucenici = () => {
     <div className="students-container">
       <h1>Učenici</h1>
       <div className="actions-container">
-        <NavLink to="/ucenici/noviucenik" className="new-student-btn">Novi Učenik</NavLink>
+        <button className="new-bibliotekar-btn" onClick={() => navigate('/ucenici/noviucenik')}>
+          <FontAwesomeIcon icon={faPlus} /> NOVI UČENIK
+        </button>
         <div className="search-container">
           <input
             type="text"

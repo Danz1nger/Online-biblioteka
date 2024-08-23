@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
@@ -8,8 +9,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useNavigate, NavLink } from 'react-router-dom';
 import './Books.css';
+import '../ucenici/Ucenici.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -188,9 +191,9 @@ const Books = () => {
         )}
       </div>
       <div className="books-header">
-        <NavLink to="/books/newbook" className="new-book-link">
-          <button className="new-book-btn">Nova knjiga</button>
-        </NavLink>
+        <Link to="/books/new" className="new-student-btn new-book-btn">
+          <FontAwesomeIcon icon={faPlus} /> Nova knjiga
+        </Link>
         <div className="search-container">
           <input
             type="text"

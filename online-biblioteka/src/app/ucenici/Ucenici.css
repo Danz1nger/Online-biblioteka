@@ -96,3 +96,67 @@ tr:hover td {
   color: red;
   margin-top: 20px;
 }
+
+.new-bibliotekar-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.new-bibliotekar-btn svg {
+  margin-right: 8px;
+}
+
+.bibliotekari-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bibliotekari-table th,
+.bibliotekari-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.bibliotekari-table th {
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.bibliotekari-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+td {
+  background-color: #fff;
+}
+
+tr:hover td {
+  background-color: #f1f1f1;
+}

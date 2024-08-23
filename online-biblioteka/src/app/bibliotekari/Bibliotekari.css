@@ -31,6 +31,29 @@ body {
   background-color: white;
 }
 
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.search-icon {
+  cursor: pointer;
+}
+
 .new-bibliotekar-btn {
   background-color: #007bff;
   color: white;
@@ -40,8 +63,6 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  margin-left: 10px;
 }
 
 .new-bibliotekar-btn svg {
