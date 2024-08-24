@@ -28,10 +28,10 @@ const Sidebar = ({ onToggle, isHeaderHidden }) => {
 
   return (
     <aside className={`sidebar ${isExpanded ? 'expanded' : ''} ${isHeaderHidden ? 'no-header' : ''}`}>
-      <div className="hamburger" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faBars} />
-      </div>
       <nav className="sidebar-nav">
+        <div className="hamburger" onClick={toggleSidebar}>
+          <FontAwesomeIcon icon={faBars} />
+        </div>
         <ul className="main-menu">
           <li>
             <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>

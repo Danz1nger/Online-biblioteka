@@ -51,3 +51,69 @@
 .main-container-app.expanded .Toastify__toast-container--top-right {
   margin-right: 220px; /* Adjust based on your expanded sidebar width */
 }
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff; /* This sets the default text color to white for dark mode */
+}
+
+.dark-mode .App {
+  background-color: #121212;
+}
+
+.dark-mode .header {
+  background-color: #1e1e1e;
+}
+
+.dark-mode .sidebar {
+  background-color: #1e1e1e;
+}
+
+.dark-mode .content {
+  background-color: #121212;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.dark-mode button {
+  background-color: #3f51b5;
+  color: #ffffff; /* Ensure button text is white in dark mode */
+}
+
+.dark-mode table {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode th {
+  background-color: #2c2c2c;
+}
+
+.dark-mode td {
+  background-color: #1e1e1e;
+}
+
+.dark-mode tr:hover td {
+  background-color: #2c2c2c;
+}
+
+/* Add this to ensure all text is white in dark mode */
+.dark-mode * {
+  color: #ffffff;
+}
+
+/* You might need to override specific elements that should remain a different color */
+.dark-mode a {
+  color: #90caf9; /* Light blue for links in dark mode */
+}
+
+.dark-mode .some-specific-element {
+  color: #90caf9; /* Override for specific elements if needed */
+}

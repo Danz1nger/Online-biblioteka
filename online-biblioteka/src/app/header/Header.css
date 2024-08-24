@@ -98,3 +98,15 @@
 .notification-container {
   margin-right: 15px;
 }
+
+.MuiSwitch-root {
+  margin-right: 15px;
+}
+
+.dark-mode .MuiSwitch-track {
+  background-color: #90caf9 !important;
+}
+
+.dark-mode .MuiSwitch-thumb {
+  background-color: #f4f4f4 !important;
+}

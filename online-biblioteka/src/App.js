@@ -107,6 +107,12 @@ const App = () => {
     };
   }, [navigate]);
 
+  useEffect(() => {
+    // Move the dark mode logic here
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    document.body.classList.toggle('dark-mode', darkMode);
+  }, []); // Empty dependency array means this effect runs once on mount
+
   return (
     <div className={`App ${isHeaderHidden || !showHeader ? 'no-header' : ''}`}>
       <a href="#main-content" className="skip-link">Skip to main content</a>

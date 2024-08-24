@@ -28,6 +28,10 @@
   user-select: none;
 }
 
+.sidebar-nav {
+  padding-top: 10px; /* Adjust this value to add space below the header */
+}
+
 .sidebar-nav ul {
   padding: 30px 0;
   list-style: none;
