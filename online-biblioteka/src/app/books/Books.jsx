@@ -50,7 +50,7 @@ const Books = () => {
         const storedBooks = JSON.parse(localStorage.getItem('books') || '[]');
         if (JSON.stringify(booksData) !== JSON.stringify(storedBooks)) {
           localStorage.setItem('books', JSON.stringify(booksData));
-          localStorage.setItem('newBooks', 'true');
+          localStorage.setItem('changesBooks', 'true');
         }
 
       } catch (err) {

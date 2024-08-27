@@ -57,10 +57,10 @@ const Header = ({ onHeaderVisibilityChange }) => {
     useEffect(() => {
         const checkNotifications = () => {
             const newNotifications = [];
-            if (localStorage.getItem('newStudents') === 'true') {
+            if (localStorage.getItem('changesStudents') === 'true') {
                 newNotifications.push('There are changes in students!');
             }
-            if (localStorage.getItem('newBooks') === 'true') {
+            if (localStorage.getItem('changesBooks') === 'true') {
                 newNotifications.push('There are changes in books!');
             }
             setNotifications(newNotifications);
@@ -81,8 +81,8 @@ const Header = ({ onHeaderVisibilityChange }) => {
 
     const clearNotifications = () => {
         setNotifications([]);
-        localStorage.removeItem('newStudents');
-        localStorage.removeItem('newBooks');
+        localStorage.removeItem('changesStudents');
+        localStorage.removeItem('changesBooks');
     };
 
     return (

@@ -44,7 +44,7 @@ const Ucenici = () => {
         const storedStudents = JSON.parse(localStorage.getItem('students') || '[]');
         if (JSON.stringify(filteredStudents) !== JSON.stringify(storedStudents)) {
           localStorage.setItem('students', JSON.stringify(filteredStudents));
-          localStorage.setItem('newStudents', 'true');
+          localStorage.setItem('changesStudents', 'true');
         }
         
         setLoading(false);
