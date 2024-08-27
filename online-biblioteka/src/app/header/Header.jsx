@@ -58,10 +58,10 @@ const Header = ({ onHeaderVisibilityChange }) => {
         const checkNotifications = () => {
             const newNotifications = [];
             if (localStorage.getItem('newStudents') === 'true') {
-                newNotifications.push('There are new students!');
+                newNotifications.push('There are changes in students!');
             }
             if (localStorage.getItem('newBooks') === 'true') {
-                newNotifications.push('There are new books!');
+                newNotifications.push('There are changes in books!');
             }
             setNotifications(newNotifications);
         };
