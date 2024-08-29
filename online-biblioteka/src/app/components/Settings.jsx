@@ -37,7 +37,7 @@ const Settings = () => {
         <a href="#categories" className={`inline ml-14 hover:text-blue-800 ${activeTab === 'categories' ? 'active-book-nav' : ''}`} onClick={() => setActiveTab('categories')}>
           Kategorije
         </a>
-        <a href="#genres" className={`inline ml-14 hover:text-blue-800 ${activeTab === 'genres' ? 'active-book-nav' : ''}`} onClick={() => setActiveTab('genres')}>
+        <a href="/genres" className={`inline ml-14 hover:text-blue-800 ${activeTab === 'genres' ? 'active-book-nav' : ''}`} onClick={() => setActiveTab('genres')}>
           Zanrovi
         </a>
         <a href="#publishers" className={`inline ml-14 hover:text-blue-800 ${activeTab === 'publishers' ? 'active-book-nav' : ''}`} onClick={() => setActiveTab('publishers')}>
