@@ -12,6 +12,7 @@ const ASSETS_TO_CACHE = [
   '/src/app/books/Books.css',
   '/src/app/components/EvidencijaIzdanja.css',
   '/src/app/components/EvidencijaRezervacija.css',
+  '/src/app/components/Genres.css',  // Add this line
   '/src/app/components/Settings.css',
   '/src/app/header/Header.css',
   '/src/app/login/Login.module.css',
@@ -19,6 +20,10 @@ const ASSETS_TO_CACHE = [
   '/src/app/sidebar/Sidebar.css',
   '/src/index.css',
   '/src/app/components/Footer.css',
+  '/src/app/authors/Authors.css',
+'/src/app/authors/AuthorDetails.css',
+'/src/app/authors/AuthorEdit.css',
+'/src/app/authors/NewAuthor.css',
 
 
   // JavaScript Files
@@ -38,6 +43,7 @@ const ASSETS_TO_CACHE = [
   '/src/app/components/BookLetter.jsx',
   '/src/app/components/EvidencijaIzdanja.jsx',
   '/src/app/components/EvidencijaRezervacija.jsx',
+  '/src/app/components/Genres.jsx',  // Add this line
   '/src/app/components/ImageFallback.jsx',
   '/src/app/components/ScrollToTop.jsx',
   '/src/app/components/Settings.jsx',
@@ -54,6 +60,11 @@ const ASSETS_TO_CACHE = [
   '/src/reportWebVitals.js',
   '/src/setupTests.js',
   '/src/app/components/Footer.jsx',
+  '/src/app/authors/Authors.jsx',
+'/src/app/authors/AuthorDetails.jsx',
+'/src/app/authors/AuthorEdit.jsx',
+'/src/app/authors/NewAuthor.jsx',
+
   
   // Images
   '/public/ava.png',
