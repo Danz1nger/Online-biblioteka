@@ -7,34 +7,33 @@ import {
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import './Bibliotekari.css';
+import './Authors.css';
 
-const Bibliotekari = () => {
-  const [librarians, setLibrarians] = useState([]);
+const Authors = () => {
+  const [authors, setAuthors] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLibrarians, setSelectedLibrarians] = useState([]);
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedLibrarian, setSelectedLibrarian] = useState(null);
+  const [selectedAuthor, setSelectedAuthor] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchLibrarians = async () => {
+    const fetchAuthors = async () => {
       const token = localStorage.getItem('jwt');
       try {
-        const response = await axios.get('https://biblioteka.simonovicp.com/api/users', {
+        const response = await axios.get('https://biblioteka.simonovicp.com/api/authors', {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         });
-        const filteredLibrarians = response.data.data.filter(user => user.role === "Bibliotekar");
-        setLibrarians(filteredLibrarians);
+        setAuthors(response.data.data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -42,24 +41,24 @@ const Bibliotekari = () => {
       }
     };
 
-    fetchLibrarians();
+    fetchAuthors();
   }, []);
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteAuthor = async (authorId) => {
     const token = localStorage.getItem('jwt');
     try {
-      await axios.delete(`https://biblioteka.simonovicp.com/api/users/${userId}`, {
+      await axios.delete(`https://biblioteka.simonovicp.com/api/authors/${authorId}`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json; charset=utf-8',
           'Authorization': `Bearer ${token}`
         }
       });
-      setLibrarians(librarians.filter(librarian => librarian.id !== userId));
+      setAuthors(authors.filter(author => author.id !== authorId));
       handleMenuClose();
     } catch (err) {
-      console.error('Error deleting user:', err);
-      setError('Failed to delete user. Please try again.');
+      console.error('Error deleting author:', err);
+      setError('Failed to delete author. Please try again.');
     }
   };
 
@@ -69,18 +68,18 @@ const Bibliotekari = () => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedLibrarians(librarians.map(librarian => librarian.id));
+      setSelectedAuthors(authors.map(author => author.id));
     } else {
-      setSelectedLibrarians([]);
+      setSelectedAuthors([]);
     }
   };
 
-  const handleSelectLibrarian = (librarianId) => {
-    setSelectedLibrarians(prevSelectedLibrarians => {
-      if (prevSelectedLibrarians.includes(librarianId)) {
-        return prevSelectedLibrarians.filter(id => id !== librarianId);
+  const handleSelectAuthor = (authorId) => {
+    setSelectedAuthors(prevSelectedAuthors => {
+      if (prevSelectedAuthors.includes(authorId)) {
+        return prevSelectedAuthors.filter(id => id !== authorId);
       } else {
-        return [...prevSelectedLibrarians, librarianId];
+        return [...prevSelectedAuthors, authorId];
       }
     });
   };
@@ -93,27 +92,27 @@ const Bibliotekari = () => {
     setSortConfig({ key, direction });
   };
 
-  const handleMenuOpen = (event, librarian) => {
+  const handleMenuOpen = (event, author) => {
     setAnchorEl(event.currentTarget);
-    setSelectedLibrarian(librarian);
+    setSelectedAuthor(author);
   };
 
   const handleMenuClose = (action) => {
-    if (action === 'delete' && selectedLibrarian) {
+    if (action === 'delete' && selectedAuthor) {
       setOpenDeleteDialog(true);
-    } else if (action === 'view' && selectedLibrarian) {
-      navigate(`/bibliotekari/bibliotekar/${selectedLibrarian.id}`);
-    } else if (action === 'edit' && selectedLibrarian) {
-      navigate(`/bibliotekari/bibliotekar/${selectedLibrarian.id}/edit`);
+    } else if (action === 'view' && selectedAuthor) {
+      navigate(`/authors/author/${selectedAuthor.id}`);
+    } else if (action === 'edit' && selectedAuthor) {
+      navigate(`/authors/author/${selectedAuthor.id}/edit`);
     } else {
       setAnchorEl(null);
-      setSelectedLibrarian(null);
+      setSelectedAuthor(null);
     }
   };
 
   const handleDeleteConfirm = async () => {
-    if (selectedLibrarian) {
-      await handleDeleteUser(selectedLibrarian.id);
+    if (selectedAuthor) {
+      await handleDeleteAuthor(selectedAuthor.id);
     }
     setOpenDeleteDialog(false);
   };
@@ -123,7 +122,7 @@ const Bibliotekari = () => {
     handleMenuClose();
   };
 
-  const sortedLibrarians = [...librarians].sort((a, b) => {
+  const sortedAuthors = [...authors].sort((a, b) => {
     if (sortConfig.key) {
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
@@ -143,19 +142,19 @@ const Bibliotekari = () => {
     return 0;
   });
 
-  const filteredLibrarians = sortedLibrarians.filter(librarian =>
-    `${librarian.name} ${librarian.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAuthors = sortedAuthors.filter(author =>
+    `${author.name} ${author.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="librarians-container">
-      <h1>Bibliotekari</h1>
+    <div className="authors-container">
+      <h1>Autori</h1>
       <div className="actions-container">
-        <NavLink to="/bibliotekari/add" className="new-librarian-btn">+ NOVI BIBLIOTEKAR</NavLink>
+        <NavLink to="/authors/add" className="new-author-btn">+ NOVI AUTOR</NavLink>
         <div className="search-container">
           <input
             type="text"
-            placeholder="Pretraži bibliotekare..."
+            placeholder="Pretraži autore..."
             value={searchTerm}
             onChange={handleSearch}
           />
@@ -170,14 +169,12 @@ const Bibliotekari = () => {
                 <TableCell padding="checkbox">
                   <Checkbox
                     onChange={handleSelectAll}
-                    checked={selectedLibrarians.length === librarians.length}
+                    checked={selectedAuthors.length === authors.length}
                   />
                 </TableCell>
                 <TableCell onClick={() => handleSort('name')}>
                   Ime i Prezime {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Tip korisnika</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -191,29 +188,27 @@ const Bibliotekari = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredLibrarians.map(librarian => (
-                  <TableRow key={librarian.id}>
+                filteredAuthors.map(author => (
+                  <TableRow key={author.id}>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedLibrarians.includes(librarian.id)}
-                        onChange={() => handleSelectLibrarian(librarian.id)}
+                        checked={selectedAuthors.includes(author.id)}
+                        onChange={() => handleSelectAuthor(author.id)}
                       />
                     </TableCell>
                     <TableCell>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar src={librarian.photoPath} alt={`${librarian.name} ${librarian.surname}`} />
-                        <span style={{ marginLeft: '10px' }}>{`${librarian.name} ${librarian.surname}`}</span>
+                        <Avatar src={author.photoPath} alt={`${author.name} ${author.surname}`} />
+                        <span style={{ marginLeft: '10px' }}>{`${author.name} ${author.surname}`}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{librarian.email}</TableCell>
-                    <TableCell>{librarian.role}</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={(event) => handleMenuOpen(event, librarian)}>
+                      <IconButton onClick={(event) => handleMenuOpen(event, author)}>
                         <MoreVertIcon />
                       </IconButton>
                       <Menu
                         anchorEl={anchorEl}
-                        open={Boolean(anchorEl) && selectedLibrarian === librarian}
+                        open={Boolean(anchorEl) && selectedAuthor === author}
                         onClose={() => handleMenuClose()}
                       >
                         <MenuItem onClick={() => handleMenuClose('view')}>Pogledaj</MenuItem>
@@ -255,4 +250,4 @@ const Bibliotekari = () => {
   );
 };
 
-export default Bibliotekari;
+export default Authors;

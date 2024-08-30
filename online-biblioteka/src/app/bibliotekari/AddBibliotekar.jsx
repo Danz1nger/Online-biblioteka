@@ -68,7 +68,7 @@ const AddBibliotekar = () => {
         }, 2000);
       }
     } catch (error) {
-      setApiError('Dolo je do greške prilikom slanja podataka. Molimo pokušajte ponovo.');
+      setApiError('Došlo je do greške prilikom slanja podataka. Molimo pokušajte ponovo.');
       console.error(error);
     }
   };
@@ -110,18 +110,18 @@ const AddBibliotekar = () => {
         />
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="photo-input-container">
-          <input
-            type="text"
-            name="photoPath"
-            placeholder="Unesite putanju do fotografije.."
-            value={formData.photoPath}
-            onChange={handleChange}
-            className="photo-input-field"
-          />
-          {errors.photoPath && <div className="error">{errors.photoPath}</div>}
-        </div>
         <div className="input-group">
+          <div>
+            <input
+              type="text"
+              name="photoPath"
+              placeholder="Unesite putanju do fotografije.."
+              value={formData.photoPath}
+              onChange={handleChange}
+              className="input-field-novi"
+            />
+            {errors.photoPath && <div className="error">{errors.photoPath}</div>}
+          </div>
           <div>
             <input
               type="text"

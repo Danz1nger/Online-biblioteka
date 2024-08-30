@@ -1,4 +1,4 @@
-.librarians-container {
+.authors-container {
   padding: 20px;
   font-family: Arial, sans-serif;
   position: relative;
@@ -36,7 +36,7 @@
   cursor: pointer;
 }
 
-.new-librarian-btn {
+.new-author-btn {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -48,7 +48,7 @@
   font-size: 14px;
 }
 
-.new-librarian-btn:hover {
+.new-author-btn:hover {
   background-color: #0056b3;
 }
 

@@ -3,6 +3,7 @@ import './Settings.css';
 import BookCover from './BookCover';
 import BookLetter from './BookLetter';
 import BookFormat from './BookFormat';
+import Genres from './Genres';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('policy');
@@ -15,6 +16,8 @@ const Settings = () => {
         return <BookLetter />;
       case 'format':
         return <BookFormat />;
+      case 'genres':
+        return <Genres />;
       // Add cases for other tabs as needed
       default:
         return <div>Select a tab to view content</div>;
