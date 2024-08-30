@@ -32,6 +32,10 @@ const Bibliotekari = lazy(() => import('./app/bibliotekari/Bibliotekari'));
 const AddBibliotekar = lazy(() => import('./app/bibliotekari/AddBibliotekar'));
 const BibliotekarDetalji = lazy(() => import('./app/bibliotekari/BibliotekarDetalji'));
 const BibliotekarEdit = lazy(() => import('./app/bibliotekari/BibliotekarEdit'));
+const Authors = lazy(() => import('./app/authors/Authors'));
+const AuthorDetails = lazy(() => import('./app/authors/AuthorDetails'));
+const AuthorEdit = lazy(() => import('./app/authors/AuthorEdit'));
+const NewAuthor = lazy(() => import('./app/authors/NewAuthor'));
 
 // 1. Memoize child components
 const MemoizedHeader = React.memo(Header);
@@ -147,6 +151,10 @@ const App = () => {
                 <Route path="/bibliotekari/add" element={<AddBibliotekar />} />
                 <Route path="/bibliotekari/bibliotekar/:id" element={<BibliotekarDetalji />} />
                 <Route path="/bibliotekari/bibliotekar/:id/edit" element={<BibliotekarEdit />} />
+                <Route path="/authors" element={<Authors />} />
+                <Route path="/authors/author/:id" element={<AuthorDetails />} />
+                <Route path="/authors/author/:id/edit" element={<AuthorEdit />} />
+                <Route path="/authors/add" element={<NewAuthor />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
