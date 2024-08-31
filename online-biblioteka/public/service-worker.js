@@ -64,7 +64,7 @@ const ASSETS_TO_CACHE = [
 '/src/app/authors/AuthorDetails.jsx',
 '/src/app/authors/AuthorEdit.jsx',
 '/src/app/authors/NewAuthor.jsx',
-
+'/src/app/components/ConnectionStatus.jsx',
   
   // Images
   '/public/ava.png',
