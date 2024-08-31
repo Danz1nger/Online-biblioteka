@@ -10,6 +10,7 @@ import './App.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ConnectionStatus from './app/components/ConnectionStatus';
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -171,6 +172,7 @@ const App = () => {
           </Routes>
         </Suspense>
       )}
+      <ConnectionStatus />
       <ToastContainer
         position="top-right"
         autoClose={5000}
