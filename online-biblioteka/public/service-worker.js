@@ -12,7 +12,7 @@ const ASSETS_TO_CACHE = [
   '/src/app/books/Books.css',
   '/src/app/components/EvidencijaIzdanja.css',
   '/src/app/components/EvidencijaRezervacija.css',
-  '/src/app/components/Genres.css',  // Add this line
+  '/src/app/components/Genres.css',
   '/src/app/components/Settings.css',
   '/src/app/header/Header.css',
   '/src/app/login/Login.module.css',
@@ -24,6 +24,8 @@ const ASSETS_TO_CACHE = [
 '/src/app/authors/AuthorDetails.css',
 '/src/app/authors/AuthorEdit.css',
 '/src/app/authors/NewAuthor.css',
+'/src/app/dashboard/Dashboard.css',
+'/src/app/publishing/Publishing.css', // Add this line
 
 
   // JavaScript Files
@@ -43,7 +45,7 @@ const ASSETS_TO_CACHE = [
   '/src/app/components/BookLetter.jsx',
   '/src/app/components/EvidencijaIzdanja.jsx',
   '/src/app/components/EvidencijaRezervacija.jsx',
-  '/src/app/components/Genres.jsx',  // Add this line
+  '/src/app/components/Genres.jsx',
   '/src/app/components/ImageFallback.jsx',
   '/src/app/components/ScrollToTop.jsx',
   '/src/app/components/Settings.jsx',
@@ -65,6 +67,8 @@ const ASSETS_TO_CACHE = [
 '/src/app/authors/AuthorEdit.jsx',
 '/src/app/authors/NewAuthor.jsx',
 '/src/app/components/ConnectionStatus.jsx',
+'/src/app/dashboard/Dashboard.jsx',
+'/src/app/publishing/Publishing.jsx', // Add this line
   
   // Images
   '/public/ava.png',
