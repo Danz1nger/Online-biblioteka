@@ -34,7 +34,7 @@ const Sidebar = ({ onToggle, isHeaderHidden }) => {
         </div>
         <ul className="main-menu">
           <li>
-            <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faTachometerAlt} />
               {isExpanded && <span>Dashboard</span>}
             </NavLink>
@@ -72,7 +72,7 @@ const Sidebar = ({ onToggle, isHeaderHidden }) => {
         </ul>
         <ul className="bottom-menu">
           <li>
-            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink to="/settings" className={({ isActive }) => isActive ? 'active' : ''}>
               <FontAwesomeIcon icon={faCog} />
               {isExpanded && <span>Settings</span>}
             </NavLink>

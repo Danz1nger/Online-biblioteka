@@ -11,6 +11,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConnectionStatus from './app/components/ConnectionStatus';
+import Dashboard from './app/dashboard/Dashboard';
 
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
@@ -24,6 +25,7 @@ const EditBook = lazy(() => import('./app/books/EditBook'));
 const NewBook = lazy(() => import('./app/books/NewBook'));
 const BookReservations = lazy(() => import('./app/books/BookReservations'));
 const BookIzdavanje = lazy(() => import('./app/books/BookIzdavanje'));
+const Publishing = lazy(() => import('./app/publishing/Publishing')); // Add this line
 const Ucenici = lazy(() => import('./app/ucenici/Ucenici'));
 const NoviUcenik = lazy(() => import('./app/ucenici/NoviUcenik'));
 const Ucenik = lazy(() => import('./app/ucenici/Ucenik'));
@@ -37,6 +39,7 @@ const Authors = lazy(() => import('./app/authors/Authors'));
 const AuthorDetails = lazy(() => import('./app/authors/AuthorDetails'));
 const AuthorEdit = lazy(() => import('./app/authors/AuthorEdit'));
 const NewAuthor = lazy(() => import('./app/authors/NewAuthor'));
+
 
 // 1. Memoize child components
 const MemoizedHeader = React.memo(Header);
@@ -136,7 +139,8 @@ const App = () => {
             <Suspense fallback={<Spinner />}>
               <Routes>
                 <Route path="/me" element={<Me />} />
-                <Route path="/" element={<Settings />} />
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/books" element={<Books />} />
                 <Route path="/books/book/:id" element={<BookDetail />} />
                 <Route path="/books/book/:id/edit" element={<EditBook />} />
@@ -156,6 +160,7 @@ const App = () => {
                 <Route path="/authors/author/:id" element={<AuthorDetails />} />
                 <Route path="/authors/author/:id/edit" element={<AuthorEdit />} />
                 <Route path="/authors/add" element={<NewAuthor />} />
+                <Route path="/publishing" element={<Publishing />} /> {/* Add this line */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>
