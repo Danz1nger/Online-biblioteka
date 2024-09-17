@@ -64,7 +64,7 @@ h1 {
 }
 
 .refresh-button {
-    background-color: #4CAF50;
+    background-color: #8A2BE2; /* Changed to purple */
     border: none;
     color: white;
     padding: 10px;
@@ -81,7 +81,7 @@ h1 {
 }
 
 .refresh-button:hover {
-    background-color: #45a049;
+    background-color: #7B1FA2; /* Darker purple for hover state */
 }
 
 .refresh-button:disabled {
