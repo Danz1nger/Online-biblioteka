@@ -4,7 +4,6 @@ import '../me/Me.css'; // Importing the Me.css for styling
 
 const BookReservations = () => {
   const [selectedTab, setSelectedTab] = useState('reserve');
-  const [reservations, setReservations] = useState([]);
   const [formData, setFormData] = useState({
     student_id: '',
     datumRezervisanja: '',
@@ -13,6 +12,9 @@ const BookReservations = () => {
   });
 
   const jwtToken = localStorage.getItem('jwt');
+
+  const [activeReservations, setActiveReservations] = useState([]);
+  const [archivedReservations, setArchivedReservations] = useState([]);
 
   const handleTabChange = useCallback((tab) => {
     setSelectedTab(tab);
@@ -93,7 +95,13 @@ const BookReservations = () => {
           },
         }
       );
-      setReservations(Array.isArray(response.data) ? response.data : []); // Ensure reservations is an array
+      if (response.data && response.data.data) {
+        setActiveReservations(response.data.data.active || []);
+        setArchivedReservations(response.data.data.archive || []);
+      } else {
+        setActiveReservations([]);
+        setArchivedReservations([]);
+      }
     } catch (error) {
       alert('Failed to fetch reservations.');
     }
@@ -202,22 +210,50 @@ const BookReservations = () => {
               onChange={handleInputChange}
             />
             <button className="save-button" onClick={getAllReservations}>Fetch Reservations</button>
+            
+            <h3>Active Reservations</h3>
             <table>
               <thead>
                 <tr>
                   <th>Reservation ID</th>
-                  <th>Student ID</th>
-                  <th>Book ID</th>
-                  <th>Reservation Date</th>
+                  <th>Book Title</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Action Date</th>
                 </tr>
               </thead>
               <tbody>
-                {reservations.map((reservation) => (
+                {activeReservations.map((reservation) => (
                   <tr key={reservation.id}>
                     <td>{reservation.id}</td>
-                    <td>{reservation.student_id}</td>
-                    <td>{reservation.book_id}</td>
-                    <td>{reservation.datumRezervisanja}</td>
+                    <td>{reservation.knjiga.title}</td>
+                    <td>{`${reservation.student.name} ${reservation.student.surname}`}</td>
+                    <td>{reservation.status}</td>
+                    <td>{reservation.action_date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <h3>Archived Reservations</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Reservation ID</th>
+                  <th>Book Title</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Action Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {archivedReservations.map((reservation) => (
+                  <tr key={reservation.id}>
+                    <td>{reservation.id}</td>
+                    <td>{reservation.knjiga.title}</td>
+                    <td>{`${reservation.student.name} ${reservation.student.surname}`}</td>
+                    <td>{reservation.status}</td>
+                    <td>{reservation.action_date}</td>
                   </tr>
                 ))}
               </tbody>

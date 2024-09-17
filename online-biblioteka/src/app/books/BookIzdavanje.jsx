@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../me/Me.css'; // Importing the Me.css for styling
 
+const API_BASE_URL = 'https://biblioteka.simonovicp.com/api';
+
 const BookIzdavanje = () => {
   const [selectedTab, setSelectedTab] = useState('izdaj');
   const [izdanja, setIzdanja] = useState([]);
@@ -103,19 +105,19 @@ const BookIzdavanje = () => {
 
   const getAllIzdanja = useCallback(async () => {
     try {
-      const response = await axios.get(
-        'https://biblioteka.simonovicp.com/api/books/borrows',
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          params: {
-            book_id: formData.book_id || undefined,
-          },
+      const response = await fetch(`${API_BASE_URL}/books/borrows${formData.book_id ? `?book_id=${formData.book_id}` : ''}`, {
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`
         }
-      );
-      setIzdanja(Array.isArray(response.data) ? response.data : []); // Ensure izdanja is an array
+      });
+      const data = await response.json();
+      if (data.data) {
+        setIzdanja([...data.data.izdate, ...data.data.prekoracene, ...data.data.otpisane]);
+      } else {
+        setIzdanja([]);
+      }
     } catch (error) {
+      console.error('Failed to fetch issuances:', error);
       alert('Failed to fetch issuances.');
     }
   }, [formData.book_id, jwtToken]);
@@ -239,38 +241,44 @@ const BookIzdavanje = () => {
           </div>
         )}
         {selectedTab === 'all' && (
-          <div>
+          <div className="all-issuances">
             <h2>All Issuances</h2>
-            <input
-              type="text"
-              name="book_id"
-              placeholder="Book ID (optional)"
-              value={formData.book_id}
-              onChange={handleInputChange}
-            />
-            <button className="save-button" onClick={getAllIzdanja}>Fetch Issuances</button>
-            <table>
-              <thead>
-                <tr>
-                  <th>Issuance ID</th>
-                  <th>Student ID</th>
-                  <th>Book ID</th>
-                  <th>Issue Date</th>
-                  <th>Return Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {izdanja.map((izdavanje) => (
-                  <tr key={izdavanje.id}>
-                    <td>{izdavanje.id}</td>
-                    <td>{izdavanje.student_id}</td>
-                    <td>{izdavanje.book_id}</td>
-                    <td>{izdavanje.datumIzdavanja}</td>
-                    <td>{izdavanje.datumVracanja}</td>
+            <div className="search-container">
+              <input
+                type="text"
+                name="book_id"
+                placeholder="Book ID (optional)"
+                value={formData.book_id}
+                onChange={handleInputChange}
+              />
+              <button className="save-button" onClick={getAllIzdanja}>Fetch Issuances</button>
+            </div>
+            {izdanja.length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Book Title</th>
+                    <th>Student</th>
+                    <th>Borrow Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {izdanja.map((izdanje) => (
+                    <tr key={izdanje.id}>
+                      <td>{izdanje.knjiga.title}</td>
+                      <td>{`${izdanje.student.name} ${izdanje.student.surname}`}</td>
+                      <td>{new Date(izdanje.borrow_date).toLocaleDateString()}</td>
+                      <td>{new Date(izdanje.return_date).toLocaleDateString()}</td>
+                      <td>{izdanje.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No issuances found. Please fetch issuances.</p>
+            )}
           </div>
         )}
       </div>
