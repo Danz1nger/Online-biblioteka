@@ -1,63 +1,201 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Button, IconButton, Menu, MenuItem, TextField } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert'; // For 3 vertical dots
 import './Publishing.css';
+import dayjs from 'dayjs'; // Using dayjs to calculate retention
 
-const IzdavanjeKnjiga = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+const Publishing = () => {
+  const [booksData, setBooksData] = useState({
+    izdate: [],
+    prekoracene: [],
+    vracene: [],
+    otpisane: []
+  });
+  const [selectedCategory, setSelectedCategory] = useState('izdate'); // Default category
+  const [selectedBooks, setSelectedBooks] = useState([]); // For managing selected checkboxes
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // For search input
+  const [anchorEl, setAnchorEl] = useState(null); // Kebab menu anchor
+  const [currentBook, setCurrentBook] = useState(null); // Book for the kebab menu actions
 
-  const books = [
-    { naziv: '1984', autor: 'George Orwell', datum: '15.09.2023', trajanje: '2 nedelje', korisnik: 'Marko Marković' },
-    { naziv: 'Ana Karenjina', autor: 'Lav Tolstoj', datum: '20.09.2023', trajanje: '3 nedelje', korisnik: 'Jovana Jovanović' },
-    { naziv: 'Gospodar prstenova', autor: 'J.R.R. Tolkien', datum: '05.10.2023', trajanje: '1 mesec', korisnik: 'Nikola Nikolić' },
-    { naziv: 'Sto godina samoće', autor: 'Gabriel García Márquez', datum: '12.10.2023', trajanje: '2 nedelje', korisnik: 'Ana Anić' },
-    { naziv: 'Zločin i kazna', autor: 'Fjodor Dostojevski', datum: '18.10.2023', trajanje: '3 nedelje', korisnik: 'Petar Petrović' }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('jwt'); // Get token from local storage
+      setLoading(true);
+      try {
+        const response = await axios.get('https://biblioteka.simonovicp.com/api/books/borrows', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token in the header
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          }
+        });
 
-  const filteredBooks = books.filter(book =>
-    Object.values(book).some(value =>
-      value.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+        setBooksData(response.data.data); // Set the fetched data
+        setLoading(false);
+      } catch (err) {
+        setError(err.message); // Handle and set error message
+        setLoading(false);
+      }
+    };
+
+    fetchData(); // Call the async function to fetch data
+  }, []);
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      setSelectedBooks(booksData[selectedCategory]);
+    } else {
+      setSelectedBooks([]);
+    }
+  };
+
+  const handleSelectClick = (event, book) => {
+    if (event.target.checked) {
+      setSelectedBooks([...selectedBooks, book]);
+    } else {
+      setSelectedBooks(selectedBooks.filter((selectedBook) => selectedBook !== book));
+    }
+  };
+
+  const calculateRetention = (borrowDate) => {
+    const borrow = dayjs(borrowDate);
+    const today = dayjs();
+    return today.diff(borrow, 'days') + ' days';
+  };
+
+  const handleSearch = () => {
+    // This filters books based on the search term
+    return booksData[selectedCategory].filter((book) =>
+      book.knjiga.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const handleMenuClick = (event, book) => {
+    setAnchorEl(event.currentTarget); // Set the anchor element for the menu
+    setCurrentBook(book); // Set the book related to the kebab menu
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setCurrentBook(null); // Clear current book when menu closes
+  };
+
+  const handleAction = (action) => {
+    if (action === 'view') {
+      alert(`Viewing details for: ${currentBook.knjiga.title}`);
+    } else if (action === 'writeOff') {
+      alert(`Writing off the book: ${currentBook.knjiga.title}`);
+    } else if (action === 'return') {
+      alert(`Returning the book: ${currentBook.knjiga.title}`);
+    }
+    handleMenuClose();
+  };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <div className="container">
-      <h1>Izdavanje knjiga</h1>
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Pretraži knjige"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <div className="publishing-container">
+      <div className="publishing-sidebar">
+        <Button variant={selectedCategory === 'izdate' ? 'contained' : 'text'} onClick={() => setSelectedCategory('izdate')}>Borrowed Books</Button>
+        <Button variant={selectedCategory === 'vracene' ? 'contained' : 'text'} onClick={() => setSelectedCategory('vracene')}>Returned Books</Button>
+        <Button variant={selectedCategory === 'prekoracene' ? 'contained' : 'text'} onClick={() => setSelectedCategory('prekoracene')}>Overdue Books</Button>
+        <Button variant={selectedCategory === 'active' ? 'contained' : 'text'} onClick={() => setSelectedCategory('active')}>Active Reservations</Button>
+        <Button variant={selectedCategory === 'archive' ? 'contained' : 'text'} onClick={() => setSelectedCategory('archive')}>Archived Reservations</Button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th><input type="checkbox" className="checkbox" /></th>
-            <th>Naziv Knjige</th>
-            <th>Autor</th>
-            <th>Datum izdavanja</th>
-            <th>Trajanje zaduženja</th>
-            <th>Korisnik</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredBooks.map((book, index) => (
-            <tr key={index}>
-              <td><input type="checkbox" className="checkbox" /></td>
-              <td>{book.naziv}</td>
-              <td>{book.autor}</td>
-              <td>{book.datum}</td>
-              <td>{book.trajanje}</td>
-              <td>{book.korisnik}</td>
-              <td className="options">⋮</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <div className="content">
+        <h1>{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1).replace('izdate', 'Borrowed Books').replace('vracene', 'Returned Books')}</h1>
+
+        {/* Search Bar */}
+        <div className="search-container">
+          <TextField
+            label="Search by Title"
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button variant="contained" onClick={handleSearch} style={{ marginLeft: '10px' }}>
+            Search
+          </Button>
+        </div>
+
+        {/* Table */}
+        <TableContainer component={Paper} className="table-container">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedBooks.length === booksData[selectedCategory].length && booksData[selectedCategory].length > 0}
+                    indeterminate={selectedBooks.length > 0 && selectedBooks.length < booksData[selectedCategory].length}
+                    onChange={handleSelectAllClick}
+                  />
+                </TableCell>
+                <TableCell>Name of the Book</TableCell>
+                <TableCell>Rented To</TableCell>
+                <TableCell>Date of Rent</TableCell>
+                <TableCell>Date of Return</TableCell>
+                <TableCell>Retention</TableCell>
+                <TableCell>Rented By</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {handleSearch().length > 0 ? (
+                handleSearch().map((book) => (
+                  <TableRow key={book.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedBooks.includes(book)}
+                        onChange={(e) => handleSelectClick(e, book)}
+                      />
+                    </TableCell>
+                    <TableCell>{book.knjiga.title}</TableCell>
+                    <TableCell>{`${book.student.name} ${book.student.surname}`}</TableCell>
+                    <TableCell>{book.borrow_date}</TableCell>
+                    <TableCell>{book.return_date || 'Not returned'}</TableCell>
+                    <TableCell>{calculateRetention(book.borrow_date)}</TableCell>
+                    <TableCell>{`${book.bibliotekar0.name} ${book.bibliotekar0.surname}`}</TableCell>
+                    <TableCell>
+                      {/* Kebab menu */}
+                      <IconButton onClick={(e) => handleMenuClick(e, book)}>
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                      >
+                        <MenuItem onClick={() => handleAction('view')}>View Details</MenuItem>
+                        <MenuItem onClick={() => handleAction('writeOff')}>Write off the book</MenuItem>
+                        <MenuItem onClick={() => handleAction('return')}>Return the book</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} align="center">
+                    No data available.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };
 
-export default IzdavanjeKnjiga;
+export default Publishing;
