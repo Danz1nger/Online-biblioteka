@@ -1,0 +1,84 @@
+/* Opšti stilovi za kontejner */
+.book-details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Svetla pozadina */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Blaga senka */
+    border-radius: 10px; /* Zaobljeni uglovi */
+    font-family: 'Arial', sans-serif; /* Globalni font */
+  }
+
+  /* Stilizacija naslova knjige */
+  .book-details-content h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333; /* Tamna siva boja */
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+  }
+
+  /* Stilizacija sekcije informacija o knjizi */
+  .book-info-section {
+    margin-top: 20px;
+  }
+
+  .book-info-section p {
+    font-size: 16px;
+    color: #555; /* Svetlija siva za tekst */
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+
+  /* Naslovi i ključni tekstovi */
+  .book-info-section p span {
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* Dodaj malo boje */
+  .book-info-section p span.author,
+  .book-info-section p span.category,
+  .book-info-section p span.genre,
+  .book-info-section p span.publisher,
+  .book-info-section p span.language {
+    color: #0056b3;
+  }
+
+  /* Stilizacija ključnih informacija */
+  .book-info-section p {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Naslovi sekcija */
+  .book-info-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #444;
+    margin-top: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+
+  .book-info-section p.borrow-date,
+  .book-info-section p.return-date {
+    font-style: italic;
+    color: #777;
+  }
+
+  @media (max-width: 600px) {
+    .book-details-container {
+      padding: 10px;
+    }
+
+    .book-details-content h1 {
+      font-size: 24px;
+    }
+
+    .book-info-section p {
+      font-size: 14px;
+    }
+  }

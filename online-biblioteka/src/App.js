@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConnectionStatus from './app/components/ConnectionStatus';
 import Dashboard from './app/dashboard/Dashboard';
-
+import PublishingDetail from './app/publishing/PublishingDetail';
 // Lazy loading components
 const Settings = lazy(() => import('./app/components/Settings'));
 const Me = lazy(() => import('./app/me/Me'));
@@ -39,6 +39,7 @@ const Authors = lazy(() => import('./app/authors/Authors'));
 const AuthorDetails = lazy(() => import('./app/authors/AuthorDetails'));
 const AuthorEdit = lazy(() => import('./app/authors/AuthorEdit'));
 const NewAuthor = lazy(() => import('./app/authors/NewAuthor'));
+
 
 
 // 1. Memoize child components
@@ -161,6 +162,7 @@ const App = () => {
                 <Route path="/authors/author/:id/edit" element={<AuthorEdit />} />
                 <Route path="/authors/add" element={<NewAuthor />} />
                 <Route path="/publishing" element={<Publishing />} /> {/* Add this line */}
+                <Route path="/publishing/:id" element={<PublishingDetail/>}/>
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>

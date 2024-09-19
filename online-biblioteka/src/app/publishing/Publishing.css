@@ -32,3 +32,19 @@
   align-items: center;
   margin-bottom: 20px;
 }
+
+
+
+.TableCellHeader {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #3d4852;
+  padding: 10px;
+  border-bottom: 1px solid #e1e5eb;
+  cursor: pointer;
+}
+
+
+
+
