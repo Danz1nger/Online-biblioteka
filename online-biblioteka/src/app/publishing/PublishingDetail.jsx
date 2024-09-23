@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import Spinner from '../components/Spinner'
 import './PublishingDetail.css'
 const PublishingDetail = () => {
   const { id } = useParams();
@@ -49,7 +50,7 @@ const PublishingDetail = () => {
   }, [id, book]);
 
   if (loading) {
-    return <div> Loading...</div>;
+    return <Spinner />; // Using Spinner component
   }
 
   if (error) {

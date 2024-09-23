@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import {
   Checkbox,
   Table,
@@ -106,16 +108,89 @@ const Publishing = () => {
     setCurrentBook(null); // Clear current book when menu closes
   };
 
-  const handleAction = (action, book) => {
+  const handleAction = async (action, book) => {
     if (action === "view") {
       navigate(`/publishing/${currentBook.id}`, { state: { book } });
     } else if (action === "writeOff") {
-      alert(`Writing off the book: ${currentBook.knjiga.title}`);
+      const result = await Swal.fire({
+        title: 'Potvrda',
+        text: `Da li ste sigurni da želite da otpišete knjigu: ${currentBook.knjiga.title}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Otpiši',
+        cancelButtonText: 'Odustani'
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("jwt");
+          await axios.post(
+            `https://biblioteka.simonovicp.com/api/books/otpisi`,
+            { toWriteoff: currentBook.id },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          // Azuriramo stanje
+          setBooksData((prevData) => {
+            const izdate = prevData.izdate.filter((b) => b.id !== currentBook.id);
+            const otpisane = [...prevData.otpisane, { ...currentBook }];
+            return { ...prevData, izdate, otpisane };
+          });
+
+          // Prikaz obaveštenja o uspehu
+          Swal.fire('Uspesno!', `Knjiga ${currentBook.knjiga.title} je otpisana.`, 'success');
+        } catch (error) {
+          // Prikaz greške
+          Swal.fire('Greška!', `Greška prilikom otpisivanja knjige: ${error.message}`, 'error');
+        }
+      }
     } else if (action === "return") {
-      alert(`Returning the book: ${currentBook.knjiga.title}`);
+      const result = await Swal.fire({
+        title: 'Potvrda',
+        text: `Da li ste sigurni da želite da vratite knjigu: ${currentBook.knjiga.title}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Vrati',
+        cancelButtonText: 'Odustani'
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("jwt");
+          await axios.post(
+            `https://biblioteka.simonovicp.com/api/books/vrati`,
+            { toReturn: currentBook.id }, // id knjige za vraćanje
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          // presla knjiga u vraćene
+          setBooksData((prevData) => {
+            const izdate = prevData.izdate.filter((b) => b.id !== currentBook.id);
+            const vracene = [...prevData.vracene, { ...currentBook, return_date: dayjs().format('YYYY-MM-DD') }];
+            return { ...prevData, izdate, vracene };
+          });
+
+          // Prikaz obaveštenja o uspjehu
+          Swal.fire('Uspesno!', `Knjiga ${currentBook.knjiga.title} je vraćena.`, 'success');
+        } catch (error) {
+          // Prikaz greške
+          Swal.fire('Greška!', `Greška prilikom vraćanja knjige: ${error.message}`, 'error');
+        }
+      }
     }
     handleMenuClose();
   };
+
 
   if (loading) {
     return <CircularProgress />;
