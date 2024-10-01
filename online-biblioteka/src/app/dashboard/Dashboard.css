@@ -64,7 +64,7 @@ h1 {
 }
 
 .refresh-button {
-    background-color: #8A2BE2; /* Changed to purple */
+    background: linear-gradient(45deg, #FFA500, #FF0000, #8A2BE2); /* Orange, Red, Purple gradient */
     border: none;
     color: white;
     padding: 10px;
@@ -77,14 +77,14 @@ h1 {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    transition: background-color 0.3s;
+    transition: background 0.3s;
 }
 
 .refresh-button:hover {
-    background-color: #7B1FA2; /* Darker purple for hover state */
+    background: linear-gradient(45deg, #FF8C00, #DC143C, #7B1FA2); /* Darker gradient for hover state */
 }
 
 .refresh-button:disabled {
-    background-color: #cccccc;
+    background: #cccccc; /* Keep the disabled state as a solid color */
     cursor: not-allowed;
 }
